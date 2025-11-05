@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
 import Unauthorized from "./pages/Unauthorized.jsx";
 // import NotFound from "./pages/NotFound.jsx";
 
@@ -25,7 +26,7 @@ function App() {
         <Route path="/" element={<h1>Home</h1>} />
         {/* Authentication pages */}
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<h1>Register</h1>} />
+        <Route path="/register" element={<Register />} />
 
         <Route path="/booking" element={<h1>Booking</h1>} />
         <Route path="/menu" element={<h1>Menu</h1>} />
