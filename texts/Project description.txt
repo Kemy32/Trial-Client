@@ -1,0 +1,37 @@
+A Reservation website for a Restuarant
+
+
+PAGES
+Login page (Fixed for all) 
+Register page (Fixed for all)
+Home page (Fixed for all)
+Contact page (Fixed for all)
+About page (Fixed for all)
+
+Booking page (Guest: when trying to book will redirected to login Page, User & Admin)
+
+Menu page (presentation of items in the menu of the restaurant) (Fixed for Guest & User, but a bit modifications for Admin: Create, update & delete)
+Blogs & Articles page (Fixed for Guest & User, but a bit modifications for Admin: Create, update & delete) 
+
+Admin panel (Admin only) 
+User profile (User only)
+
+
+
+
+COMPONENTS
+topBar (Fixed for all) 
+Navbar (3 variations: Guest, User & Admin)
+Footer (Fixed for all)
+
+Button
+Card (Menu Item, Blog-Article & Services)
+Spinner (Loading)
+
+
+FORMS
+Login   
+Register
+OTP Verification
+Booking
+Message
