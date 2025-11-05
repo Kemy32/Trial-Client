@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import LoginForm from "./components/forms/LoginForm.jsx";
+import Login from "./pages/Login.jsx";
 import Unauthorized from "./pages/Unauthorized.jsx";
 // import NotFound from "./pages/NotFound.jsx";
 
@@ -24,7 +24,7 @@ function App() {
         {/* Home */}
         <Route path="/" element={<h1>Home</h1>} />
         {/* Authentication pages */}
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<h1>Register</h1>} />
 
         <Route path="/booking" element={<h1>Booking</h1>} />

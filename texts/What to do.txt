@@ -1,8 +1,9 @@
 Create the states of the application (Redux Toolkit)
 
-Create axios instance (Axios)
-
 React Router
+
+
+
 
 Determind the components
 Tailwind.css or Bootstrap

@@ -61,93 +61,91 @@ export default function LoginForm() {
   };
 
   return (
-    <div>
-      <div className="auth-container">
-        <div className="auth-card">
-          <h2 className="auth-title">Welcome Back</h2>
-          <p className="auth-subtitle">Sign in to your account</p>
+    <>
+      <div className="auth-card">
+        <h2 className="auth-title">Welcome Back</h2>
+        <p className="auth-subtitle">Sign in to your account</p>
 
-          <Formik
-            initialValues={initialValues}
-            validationSchema={loginSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ isSubmitting, errors, touched }) => (
-              <Form className="auth-form">
-                {/* Email Field */}
-                <div className="form-group">
-                  <label htmlFor="email">Email Address</label>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={loginSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, errors, touched }) => (
+            <Form className="auth-form">
+              {/* Email Field */}
+              <div className="form-group">
+                <label htmlFor="email">Email Address</label>
+                <Field
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="john@example.com"
+                  className={`form-input ${
+                    errors.email && touched.email ? "input-error" : ""
+                  }`}
+                />
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="field-error"
+                />
+              </div>
+
+              {/* Password Field */}
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <div className="password-input-wrapper">
                   <Field
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="john@example.com"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    id="password"
+                    placeholder="••••••••"
                     className={`form-input ${
-                      errors.email && touched.email ? "input-error" : ""
+                      errors.password && touched.password ? "input-error" : ""
                     }`}
                   />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="field-error"
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="password-toggle"
+                  >
+                    {showPassword ? "👁️" : "👁️‍🗨️"}
+                  </button>
                 </div>
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="field-error"
+                />
+              </div>
 
-                {/* Password Field */}
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <div className="password-input-wrapper">
-                    <Field
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      id="password"
-                      placeholder="••••••••"
-                      className={`form-input ${
-                        errors.password && touched.password ? "input-error" : ""
-                      }`}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="password-toggle"
-                    >
-                      {showPassword ? "👁️" : "👁️‍🗨️"}
-                    </button>
-                  </div>
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="field-error"
-                  />
-                </div>
+              <button
+                type="submit"
+                disabled={isSubmitting || isLoading}
+                className="btn btn-primary btn-full"
+              >
+                {isLoading ? (
+                  <>
+                    <span className="spinner"></span>
+                    Signing in...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
+              </button>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting || isLoading}
-                  className="btn btn-primary btn-full"
-                >
-                  {isLoading ? (
-                    <>
-                      <span className="spinner"></span>
-                      Signing in...
-                    </>
-                  ) : (
-                    "Sign In"
-                  )}
-                </button>
-
-                {/* Register Link */}
-                <p className="auth-footer">
-                  Don't have an account?{" "}
-                  <Link to="/register" className="auth-link">
-                    Sign up
-                  </Link>
-                </p>
-              </Form>
-            )}
-          </Formik>
-        </div>
+              {/* Register Link */}
+              <p className="auth-footer">
+                Don't have an account?{" "}
+                <Link to="/register" className="auth-link">
+                  Sign up
+                </Link>
+              </p>
+            </Form>
+          )}
+        </Formik>
       </div>
-    </div>
+    </>
   );
 }
