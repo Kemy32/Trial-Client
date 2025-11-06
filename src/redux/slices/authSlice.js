@@ -16,7 +16,7 @@ const initialState = {
 };
 
 export const register = createAsyncThunk(
-  "/auth/register",
+  "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/auth/register", userData);
@@ -33,7 +33,7 @@ export const register = createAsyncThunk(
 );
 
 export const verifyOtp = createAsyncThunk(
-  "/auth/verify-otp",
+  "auth/verify-otp",
   async ({ email, otp }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/auth/verify-otp", {
@@ -54,7 +54,7 @@ export const verifyOtp = createAsyncThunk(
 );
 
 export const resendOtp = createAsyncThunk(
-  "/auth/resend-otp",
+  "auth/resend-otp",
   async (email, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/auth/resend-otp", {
@@ -70,7 +70,7 @@ export const resendOtp = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  "/auth/login",
+  "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/auth/login", {

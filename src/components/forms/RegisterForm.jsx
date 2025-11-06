@@ -6,7 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 import { registerSchema } from "../../validationSchema/registerSchema";
 import {
-  Register,
+  register,
   clearError,
   clearMessage,
 } from "../../redux/slices/authSlice";
@@ -25,7 +25,7 @@ export default function RegisterForm() {
     email: "",
     phone: "",
     password: "",
-    image: null,
+    profile_image: null,
   };
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function RegisterForm() {
   }, [error, message, dispatch]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    dispatch(Register(values));
+    dispatch(register(values));
     setSubmitting(false);
   };
 
