@@ -1,4 +1,4 @@
-import OtpVerificationForm from "../components/forms/OtpVerificaitonForm";
+import OtpVerificationForm from "../../components/forms/OtpVerificaitonForm";
 
 export default function VerifyOtp() {
   return (
