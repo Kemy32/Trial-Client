@@ -5,24 +5,46 @@ const initialState = {
   user: null,
   isAuthenticated: false,
   isLoading: false,
-  error: null,
 
   // OTP-specific states
   pendingVerification: false, // User registered, waiting for OTP
   pendingEmail: null, // Email waiting for OTP verification
 
+  // Error
+  error: null,
   // Success messages
   message: null,
 };
 
+// Guest (to log in)
+export const login = createAsyncThunk(
+  "auth/login",
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/auth/login", {
+        email,
+        password,
+      });
+
+      return {
+        user: response.data.user,
+        message: response.data.message,
+      };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
+  }
+);
+
+// Guest (to register)
 export const register = createAsyncThunk(
   "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/auth/register", userData);
       return {
-        message: response.data.message,
         user: response.data.user,
+        message: response.data.message,
       };
     } catch (error) {
       return rejectWithValue(
@@ -32,6 +54,7 @@ export const register = createAsyncThunk(
   }
 );
 
+// Guest (to verify OTP)
 export const verifyOtp = createAsyncThunk(
   "auth/verify-otp",
   async ({ email, otp }, { rejectWithValue }) => {
@@ -53,6 +76,7 @@ export const verifyOtp = createAsyncThunk(
   }
 );
 
+// Guest (to resend OTP)
 export const resendOtp = createAsyncThunk(
   "auth/resend-otp",
   async (email, { rejectWithValue }) => {
@@ -69,25 +93,7 @@ export const resendOtp = createAsyncThunk(
   }
 );
 
-export const login = createAsyncThunk(
-  "auth/login",
-  async ({ email, password }, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.post("/auth/login", {
-        email,
-        password,
-      });
-
-      return {
-        user: response.data.user,
-        message: response.data.message,
-      };
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Login failed");
-    }
-  }
-);
-
+// User (to log out)
 export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
@@ -123,6 +129,21 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // // // // // // Login // // // // // //
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+        state.message = action.payload.message;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
       // // // // // // Register // // // // // //
       .addCase(register.pending, (state) => {
         state.isLoading = true;
@@ -168,21 +189,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
-      // // // // // // Login // // // // // //
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
-        state.message = action.payload.message;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
+
       // // // // // // Logout // // // // // //
       .addCase(logout.pending, (state) => {
         state.isLoading = true;

@@ -1,4 +1,3 @@
-import { React } from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
@@ -20,26 +19,22 @@ export default function RegisterForm() {
     (state) => state.auth
   );
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const initialValues = {
     name: "",
     email: "",
     phone: "",
     password: "",
-    profile_image: null,
+    profile_image: "",
   };
 
+  // Redirect if registered
   useEffect(() => {
     if (pendingVerification) {
       navigate("/verify-otp");
     }
   }, [pendingVerification, navigate]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearError());
-      dispatch(clearMessage());
-    };
-  }, [dispatch]);
 
   useEffect(() => {
     if (error) {
@@ -59,6 +54,13 @@ export default function RegisterForm() {
       dispatch(clearMessage());
     }
   }, [error, message, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+      dispatch(clearMessage());
+    };
+  }, [dispatch]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     dispatch(register(values));
@@ -80,7 +82,7 @@ export default function RegisterForm() {
             <Form className="auth-form">
               {/* Name Field */}
               <div className="form-group">
-                <label htmlFor="name">Full Name *</label>
+                <label htmlFor="name">Full Name</label>
                 <Field
                   type="text"
                   name="name"
@@ -99,7 +101,7 @@ export default function RegisterForm() {
 
               {/* Email Field */}
               <div className="form-group">
-                <label htmlFor="email">Email Address *</label>
+                <label htmlFor="email">Email Address</label>
                 <Field
                   type="email"
                   name="email"
@@ -137,23 +139,31 @@ export default function RegisterForm() {
 
               {/* Password Field */}
               <div className="form-group">
-                <label htmlFor="password">Password *</label>
-                <Field
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  className={`form-input ${
-                    errors.password && touched.password ? "input-error" : ""
-                  }`}
-                />
+                <label htmlFor="password">Password</label>
+                <div className="password-input-wrapper">
+                  <Field
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    id="password"
+                    placeholder="••••••••"
+                    className={`form-input ${
+                      errors.password && touched.password ? "input-error" : ""
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
                 <ErrorMessage
                   name="password"
                   component="div"
                   className="field-error"
                 />
               </div>
-
               {/* Profile Image Field */}
               <div className="form-group">
                 <label htmlFor="profile_image">Profile Image (Optional)</label>
