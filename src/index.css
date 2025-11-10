@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* Crimson */
+  --color-crimson: #ad343e;
+  /* Light Gray */
+  --color-light-gray: #f9f9f7;
+  /* Gray */
+  --color-grayish: #cccccc;
+  /* Mid Gray */
+  --color-mid-gray: #585858;
+  /* Dark Gray */
+  --color-dark-gray: #474747;
+
+  /* White */
+  --color-white: #ffffff;
+  /* Black */
+  --color-black: #000000;
+
+  /* 1. Set the default UI font to Tailwind's system sans-serif stack */
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+
+  /* 2. Define a new font for headings using Playfair Display */
+  --font-heading: "Playfair Display", serif;
+}

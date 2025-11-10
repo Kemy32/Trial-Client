@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an axios instance with custom configuration
 const axiosInstance = axios.create({
-  //baseURL: "http://localhost:3001/api",
+  //baseURL (local): "http://localhost:3001/api",
   baseURL: import.meta.env.VITE_API_URL,
   // Allow cross-site requests
   withCredentials: true,

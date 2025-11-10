@@ -4,6 +4,9 @@ import axiosInstance from "../../api/axiosInstance";
 const initialState = {
   bookings: [],
   currentBooking: null,
+  filteredBookings: [],
+  selectedStatus: "all",
+
   isLoading: false,
 
   error: null,
@@ -142,25 +145,25 @@ export const updateBookingStatus = createAsyncThunk(
 
 // // // // Must be reviewed
 // Admin (to get all bookings by status)
-export const getBookingsByStatus = createAsyncThunk(
-  "admin/bookings/fetchBookingsByStatus",
-  async (status, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.get(
-        `/admin/bookings?status=${status}`
-      );
-      return {
-        bookings: response.data.bookings,
-        message: response.data.message,
-      };
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message ||
-          `Failed to get users' bookings with status ${status}`
-      );
-    }
-  }
-);
+// export const getBookingsByStatus = createAsyncThunk(
+//   "admin/bookings/fetchBookingsByStatus",
+//   async (status, { rejectWithValue }) => {
+//     try {
+//       const response = await axiosInstance.get(
+//         `/admin/bookings?status=${status}`
+//       );
+//       return {
+//         bookings: response.data.bookings,
+//         message: response.data.message,
+//       };
+//     } catch (error) {
+//       return rejectWithValue(
+//         error.response?.data?.message ||
+//           `Failed to get users' bookings with status ${status}`
+//       );
+//     }
+//   }
+// );
 
 // Admin (to delete a booking by id)
 export const deleteBooking = createAsyncThunk(
@@ -183,14 +186,28 @@ const bookingSlice = createSlice({
   name: "booking",
   initialState,
   reducers: {
+    // filterBookingByStatus: (state, action) => {
+    //   if (action.payload === "all") {
+    //     state.filteredBookings = state.bookings;
+    //   } else {
+    //     state.filteredBookings = state.bookings.filter(
+    //       (booking) => booking.status === action.payload
+    //     );
+    //   }
+    // },
     clearMessage: (state) => {
       state.message = null;
     },
     clearError: (state) => {
       state.error = null;
     },
-    clearCurrentBooking: (state) => {
-      state.currentBooking = null;
+    resetMenuState: (state) => {
+      state.menuItems = [];
+      state.currentItem = null;
+      state.filteredItems = [];
+      state.selectedCategory = "all";
+      state.isLoading = false;
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -207,141 +224,97 @@ const bookingSlice = createSlice({
         state.currentBooking = updatedBooking;
       }
     };
+
+    // Helper function for consistent handling of pending state
+    const handlePending = (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.message = null;
+    };
+
+    // Helper function for consistent handling of rejected state
+    const handleRejected = (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.message = null;
+    };
+
     builder
       // // // // // // User: Create Booking // // // // // //
-      .addCase(createBooking.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.message = null;
-      })
+      // // // // // // User: Create Booking // // // // // //
+      .addCase(createBooking.pending, handlePending)
       .addCase(createBooking.fulfilled, (state, action) => {
         state.isLoading = false;
         state.bookings.push(action.payload.booking);
         state.message = action.payload.message;
       })
-      .addCase(createBooking.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.message = null;
-      }) // // // // // // User: Get User Bookings // // // // // //
+      .addCase(createBooking.rejected, handleRejected)
 
-      .addCase(getUserBookings.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.message = null;
-      })
+      // // // // // // User: Get User Bookings // // // // // //
+      .addCase(getUserBookings.pending, handlePending)
       .addCase(getUserBookings.fulfilled, (state, action) => {
         state.isLoading = false;
         state.bookings = action.payload.bookings;
         state.message = action.payload.message;
       })
-      .addCase(getUserBookings.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.message = null;
-      }) // // // // // // User: Get Booking By ID // // // // // //
+      .addCase(getUserBookings.rejected, handleRejected)
 
-      .addCase(getBookingById.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.message = null;
-      })
+      // // // // // // User: Get Booking By ID // // // // // //
+      .addCase(getBookingById.pending, handlePending)
       .addCase(getBookingById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentBooking = action.payload.booking;
         state.message = action.payload.message;
       })
-      .addCase(getBookingById.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.message = null;
-      }) // // // // // // User: Cancel Booking // // // // // //
+      .addCase(getBookingById.rejected, handleRejected)
 
-      .addCase(cancelBooking.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.message = null;
-      })
+      // // // // // // User: Cancel Booking // // // // // //
+      .addCase(cancelBooking.pending, handlePending)
       .addCase(cancelBooking.fulfilled, (state, action) => {
         state.isLoading = false;
         updateBookingInArray(state, action.payload.booking);
         state.message = action.payload.message;
       })
-      .addCase(cancelBooking.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.message = null;
-      }) // // // // // // Admin: Get All Bookings // // // // // //
+      .addCase(cancelBooking.rejected, handleRejected)
 
-      .addCase(getAllUsersBookings.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.message = null;
-      })
+      // // // // // // Admin: Get All Bookings // // // // // //
+      .addCase(getAllUsersBookings.pending, handlePending)
       .addCase(getAllUsersBookings.fulfilled, (state, action) => {
         state.isLoading = false;
         state.bookings = action.payload.bookings;
         state.message = action.payload.message;
       })
-      .addCase(getAllUsersBookings.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.message = null;
-      }) // // // // // // Admin: Get User's All Bookings // // // // // //
+      .addCase(getAllUsersBookings.rejected, handleRejected)
 
-      .addCase(getUserAllBookings.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.message = null;
-      })
+      // // // // // // Admin: Get User's All Bookings // // // // // //
+      .addCase(getUserAllBookings.pending, handlePending)
       .addCase(getUserAllBookings.fulfilled, (state, action) => {
         state.isLoading = false;
         state.bookings = action.payload.bookings;
         state.message = action.payload.message;
       })
-      .addCase(getUserAllBookings.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.message = null;
-      }) // // // // // // Admin: Get Bookings By Status // // // // // //
+      .addCase(getUserAllBookings.rejected, handleRejected)
 
-      .addCase(getBookingsByStatus.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.message = null;
-      })
-      .addCase(getBookingsByStatus.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.bookings = action.payload.bookings;
-        state.message = action.payload.message;
-      })
-      .addCase(getBookingsByStatus.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.message = null;
-      }) // // // // // // Admin: Update Booking Status // // // // // //
+      // // // // // // Admin: Get Bookings By Status // // // // // //
+      // .addCase(getBookingsByStatus.pending, handlePending)
+      // .addCase(getBookingsByStatus.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.bookings = action.payload.bookings;
+      //   state.message = action.payload.message;
+      // })
+      // .addCase(getBookingsByStatus.rejected, handleRejected)
 
-      .addCase(updateBookingStatus.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.message = null;
-      })
+      // // // // // // Admin: Update Booking Status // // // // // //
+      .addCase(updateBookingStatus.pending, handlePending)
       .addCase(updateBookingStatus.fulfilled, (state, action) => {
         state.isLoading = false;
         updateBookingInArray(state, action.payload.booking);
         state.message = action.payload.message;
       })
-      .addCase(updateBookingStatus.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.message = null;
-      }) // // // // // // Admin: Delete Booking // // // // // //
+      .addCase(updateBookingStatus.rejected, handleRejected)
 
-      .addCase(deleteBooking.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.message = null;
-      })
+      // // // // // // Admin: Delete Booking // // // // // //
+      .addCase(deleteBooking.pending, handlePending)
       .addCase(deleteBooking.fulfilled, (state, action) => {
         state.isLoading = false;
         const deletedId = action.meta.arg;
@@ -351,12 +324,10 @@ const bookingSlice = createSlice({
         }
         state.message = action.payload.message;
       })
-      .addCase(deleteBooking.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.message = null;
-      });
+      .addCase(deleteBooking.rejected, handleRejected);
   },
 });
 
+export const { clearError, clearMessage, resetBookingState } =
+  bookingSlice.actions;
 export default bookingSlice.reducer;

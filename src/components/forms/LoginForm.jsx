@@ -50,8 +50,8 @@ export default function LoginForm() {
   // Clean up on unmount
   useEffect(() => {
     return () => {
-      dispatch(clearError);
-      dispatch(clearMessage);
+      dispatch(clearError());
+      dispatch(clearMessage());
     };
   }, [dispatch]);
 
