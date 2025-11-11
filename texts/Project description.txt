@@ -1,10 +1,14 @@
-A Reservation website for a Restuarant
+FRONTEND STRUCTURE
 
 
+
+-----------------------------------------------------------------------------------------------
 PAGES
+
+Home page (Fixed for all)
 Login page (Fixed for all) 
 Register page (Fixed for all)
-Home page (Fixed for all)
+Verify otp page (After register)
 Contact page (Fixed for all)
 About page (Fixed for all)
 
@@ -17,21 +21,42 @@ Admin panel (Admin only)
 User profile (User only)
 
 
+Unauthorized
+Not Found
 
-
+-----------------------------------------------------------------------------------------------
 COMPONENTS
+
+LAYOUT
 topBar (Fixed for all) 
 Navbar (3 variations: Guest, User & Admin)
 Footer (Fixed for all)
+UserLayout (For user)
+AdminLayout(For admin)
 
+UI 
 Button
 Card (Menu Item, Blog-Article & Services)
 Spinner (Loading)
+Notifcation Badge
+Status Badge
 
 
 FORMS
 Login   
 Register
 OTP Verification
+Update Profile
 Booking
-Message
+MenuItem
+Contact
+-----------------------------------------------------------------------------------------------
+REDUX
+
+SLICES
+authSlice
+adminSlice
+userSlice
+bookingSlice
+menuSlice
+notificationSlice  

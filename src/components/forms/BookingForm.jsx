@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
-import createBooking from "../../redux/slices/bookingSlice";
-import { clearError, clearMessage } from "../../redux/slices/bookingSlice";
+import {
+  clearError,
+  clearMessage,
+  createBooking,
+} from "../../redux/slices/bookingSlice";
 import { bookingSchema } from "../../validationSchema/bookingSchema";
 
 export default function BookingForm() {
@@ -56,7 +59,11 @@ export default function BookingForm() {
   }, [dispatch]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    dispatch(createBooking(values));
+    const resultAction = await dispatch(createBooking(values));
+    // Redirect on success
+    if (createBooking.fulfilled.match(resultAction)) {
+      navigate("/");
+    }
     setSubmitting(false);
   };
 

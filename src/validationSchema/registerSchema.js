@@ -9,6 +9,8 @@ export const registerSchema = Yup.object({
     .email("Invalid email address")
     .required("Email is required"),
   phone: Yup.string()
+    .transform((value) => (value === "" ? null : value))
+    .nullable()
     .matches(/^[0-9+\-() ]*$/, "Invalid phone number")
     .optional(),
   password: Yup.string()

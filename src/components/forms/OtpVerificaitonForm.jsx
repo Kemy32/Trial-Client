@@ -74,7 +74,7 @@ function OtpVerificationForm() {
     if (countdown === 0) {
       setResendLoading(true);
       dispatch(resendOtp(pendingEmail));
-      setCountdown(30);
+      setCountdown(15);
       setResendLoading(false);
     }
   };
@@ -102,7 +102,7 @@ function OtpVerificationForm() {
                 placeholder="Enter 6 digits"
                 maxLength={6}
                 className={`form-input otp-input ${
-                  errors.opt && touched.otp ? "input-error" : ""
+                  errors.otp && touched.otp ? "input-error" : ""
                 }`}
               />
               <ErrorMessage
@@ -113,7 +113,7 @@ function OtpVerificationForm() {
             </div>
             <button
               type="submit"
-              disable={
+              disabled={
                 isSubmitting ||
                 isLoading ||
                 values.otp.length < 6 ||

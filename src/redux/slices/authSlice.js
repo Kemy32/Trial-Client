@@ -16,6 +16,23 @@ const initialState = {
   message: null,
 };
 
+// User (to check if authenticated)
+export const checkAuth = createAsyncThunk(
+  "auth/checkAuth",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("/auth/me");
+      return {
+        user: response.data.user,
+      };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Not authenticated"
+      );
+    }
+  }
+);
+
 // Guest (to log in)
 export const login = createAsyncThunk(
   "auth/login",
@@ -41,7 +58,22 @@ export const register = createAsyncThunk(
   "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/auth/register", userData);
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append("name", userData.name);
+      formData.append("email", userData.email);
+      formData.append("phone", userData.phone || "");
+      formData.append("password", userData.password);
+
+      if (userData.profile_image) {
+        formData.append("profile_image", userData.profile_image);
+      }
+
+      const response = await axiosInstance.post("/auth/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return {
         user: response.data.user,
         message: response.data.message,
@@ -129,6 +161,20 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // // // // // // Check Auth (on app load) // // // // // //
+      .addCase(checkAuth.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+      })
+      .addCase(checkAuth.rejected, (state) => {
+        state.isLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+      })
       // // // // // // Login // // // // // //
       .addCase(login.pending, (state) => {
         state.isLoading = true;
@@ -197,6 +243,7 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.isLoading = false;
         state.isAuthenticated = false;
+        state.error = null;
         state.user = null;
         state.pendingVerification = false;
         state.pendingEmail = null;

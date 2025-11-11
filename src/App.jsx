@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { checkAuth } from "./redux/slices/authSlice";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -28,6 +31,13 @@ import Unauthorized from "./pages/auth/Unauthorized.jsx";
 import NotFound from "./pages/errors/NotFound.jsx";
 
 function App() {
+  const dispatch = useDispatch();
+
+  // Check if user is logged in on app load
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
   return (
     <>
       <ToastContainer
@@ -57,6 +67,11 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
 
+        {/* Protected Routes for Admin and User */}
+        <Route element={<ProtectedRoute allowedRoles={["admin", "user"]} />}>
+          <Route path="/booking" element={<Booking />} />
+        </Route>
+
         {/* Protected Routes for Admin */}
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/admin-panel" element={<AdminPanel />} />
@@ -64,9 +79,8 @@ function App() {
 
         {/* Protected Routes for User */}
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/profile" element={<UserProfile />}></Route>
           <Route path="/my-bookings" element={<MyBookings />}></Route>
+          <Route path="/profile" element={<UserProfile />}></Route>
         </Route>
 
         {/* Unauthorized */}

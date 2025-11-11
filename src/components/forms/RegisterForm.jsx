@@ -15,9 +15,8 @@ export default function RegisterForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [previewImage, setPreviewImage] = useState(null);
-  const { isLoading, error, message, pendingVerification } = useSelector(
-    (state) => state.auth
-  );
+  const { isLoading, error, message, pendingVerification, isAuthenticated } =
+    useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -35,6 +34,12 @@ export default function RegisterForm() {
       navigate("/verify-otp");
     }
   }, [pendingVerification, navigate]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     if (error) {
@@ -63,8 +68,16 @@ export default function RegisterForm() {
   }, [dispatch]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    dispatch(register(values));
-    setSubmitting(false);
+    try {
+      dispatch(register(values));
+    } catch (error) {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 5000,
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

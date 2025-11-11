@@ -12,7 +12,6 @@ export default function ProtectedRoutes({ allowedRoles }) {
     return <Navigate to="/unauthorized" />;
   }
 
-  // User is authenticated and has a valid role
   // Outlet component renders child routes
   return <Outlet />;
 }
