@@ -3,16 +3,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
+import { EyeClosed, Eye } from "lucide-react";
 import { clearError, clearMessage, login } from "../../redux/slices/authSlice";
 import { loginSchema } from "../../validationSchema/loginSchema";
+
 import "../../styles/forms.css";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, isAuthenticated, error, message } = useSelector(
-    (state) => state.auth
-  );
+  const {
+    isLoading,
+    isAuthenticated,
+    pendingVerification,
+    pendingEmail,
+    error,
+    message,
+  } = useSelector((state) => state.auth);
+
   const [showPassword, setShowPassword] = useState(false);
   const initialValues = {
     email: "",
@@ -25,6 +33,17 @@ export default function LoginForm() {
       navigate("/");
     }
   }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    // If the server explicitly rejected the login because
+    // verification is required, redirect to the OTP page.
+    if (pendingVerification && pendingEmail) {
+      // Clear the error/message right before redirecting
+      dispatch(clearError());
+      dispatch(clearMessage());
+      navigate("/verify-otp");
+    }
+  }, [pendingVerification, pendingEmail, navigate, dispatch]);
 
   // Show toast notifications when error or message changes
   useEffect(() => {
@@ -110,7 +129,7 @@ export default function LoginForm() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="password-toggle"
                   >
-                    {showPassword ? "👁️" : "👁️‍🗨️"}
+                    {showPassword ? <Eye /> : <EyeClosed />}
                   </button>
                 </div>
                 <ErrorMessage

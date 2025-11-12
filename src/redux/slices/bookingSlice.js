@@ -241,7 +241,6 @@ const bookingSlice = createSlice({
 
     builder
       // // // // // // User: Create Booking // // // // // //
-      // // // // // // User: Create Booking // // // // // //
       .addCase(createBooking.pending, handlePending)
       .addCase(createBooking.fulfilled, (state, action) => {
         state.isLoading = false;

@@ -29,11 +29,14 @@ import MyBookings from "./pages/user/MyBookings.jsx";
 
 import Unauthorized from "./pages/auth/Unauthorized.jsx";
 import NotFound from "./pages/errors/NotFound.jsx";
+import Logout from "./pages/auth/Logout.jsx";
 
 function App() {
   const dispatch = useDispatch();
 
   // Check if user is logged in on app load
+  // Needed for actions that require authentication on app load
+  // To avoid redirecting the user (whose already logged in) to the login page
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
@@ -66,6 +69,9 @@ function App() {
         <Route path="/blogs-articles" element={<BlogArticle />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        {/* Will be under protected routes */}
+        {/* Used here just for testing */}
+        <Route path="/logout" element={<Logout />}></Route>
 
         {/* Protected Routes for Admin and User */}
         <Route element={<ProtectedRoute allowedRoles={["admin", "user"]} />}>
@@ -74,13 +80,16 @@ function App() {
 
         {/* Protected Routes for Admin */}
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-          <Route path="/admin-panel" element={<AdminPanel />} />
+          <Route path="/admin/admin-panel" element={<AdminPanel />} />
+          <Route path="/admin/profile" element={<UserProfile />}></Route>
+          <Route path="/admin/users" element={<h1>Users List</h1>}></Route>
+          <Route path="/admin/bookings" element={<Booking />} />
         </Route>
 
         {/* Protected Routes for User */}
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-          <Route path="/my-bookings" element={<MyBookings />}></Route>
-          <Route path="/profile" element={<UserProfile />}></Route>
+          <Route path="/user/profile" element={<UserProfile />}></Route>
+          <Route path="/user/my-bookings" element={<MyBookings />}></Route>
         </Route>
 
         {/* Unauthorized */}

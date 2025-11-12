@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
+import { EyeClosed, Eye } from "lucide-react";
+
 import { registerSchema } from "../../validationSchema/registerSchema";
 import {
   register,
@@ -168,7 +170,7 @@ export default function RegisterForm() {
                     className="password-toggle"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? "Hide" : "Show"}
+                    {showPassword ? <Eye /> : <EyeClosed />}
                   </button>
                 </div>
                 <ErrorMessage

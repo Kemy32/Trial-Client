@@ -14,7 +14,10 @@ export default function BookingForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, error, message } = useSelector((state) => state.booking);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  const { isLoading: authLoading, isAuthenticated } = useSelector(
+    (state) => state.auth
+  );
   const initialValues = {
     name: "",
     phone: "",
@@ -23,11 +26,12 @@ export default function BookingForm() {
     totalPersons: "",
   };
 
+  // Only redirect if auth check is complete AND user is not authenticated
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       navigate("/login");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, authLoading, navigate]);
 
   // Show toast notifications when error or message changes
   useEffect(() => {

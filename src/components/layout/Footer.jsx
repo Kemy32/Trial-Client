@@ -49,6 +49,7 @@ export default function Footer() {
   const UtilityLinks = [
     { name: "Login", path: "/login" },
     { name: "Register", path: "/register" },
+    { name: "Logout", path: "/logout" },
     { name: "Booking", path: "/booking" },
     { name: "FAQs", path: "#" },
     { name: "Privacy & Policy", path: "#" },
