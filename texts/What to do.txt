@@ -1,12 +1,22 @@
-Create the states of the application (Redux Toolkit)
 
-React Router
+Create Menu page sections and contents
+Create Blog page secitons and contents
+
+User profile page
+Functionality (User):Edit user profile 
+Functionality (User):View bookings (cancel pending bookings)
+
+
+Admin profile page
+Functionality (Admin): Edit admin profile 
+Functionality (Admin): View users
+Functionality (Admin): View Menu items (Create, edit, delete menu item)  
+Functionality (Admin): View Blogs (Create, edit, delete blog)
+Functionality (Admin): View Bookings (reject, accept bookings)
+Functionality (Admin): View messages
 
 
 
 
-Determind the components
-Tailwind.css or Bootstrap
 
-Formik for forms
-yup for Schema valdiation
+

@@ -6,7 +6,7 @@ const initialState = {
   currentItem: null,
   filteredItems: [],
   selectedCategory: "all", // all ,breakfast, dinner, lunch ,drinks
-  search: "",
+  // search: "",
   isLoading: false,
   error: null,
   message: null,
@@ -15,11 +15,34 @@ const initialState = {
 // First variant to get all menu items without search and category filters
 // We will make a request to the server to get all menu items then filter using the reducers actions
 // Admin, User & Guest (to get all menu items)
+export const getAllMenuItems = createAsyncThunk(
+  "menu/getAllMenuItems",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("/menu/items");
+      return {
+        menuItems: response.data,
+        message: response.data.message,
+      };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to get menu items"
+      );
+    }
+  }
+);
+
+// Second variant to get all menu items with search and category filters
+// We will make a request to the server to get all menu items with the filters applied but we will make a request each time we filter
+// Admin, User & Guest (to get all menu items includes search and category filters)
 // export const getAllMenuItems = createAsyncThunk(
 //   "menu/getAllMenuItems",
-//   async (_, { rejectWithValue }) => {
+//   async ({ search, category }, { rejectWithValue }) => {
 //     try {
-//       const response = await axiosInstance.get("/menu/items");
+//       const response = await axiosInstance.get("/menu/items", {
+//         search,
+//         category,
+//       });
 //       return {
 //         menuItems: response.data.menuItems,
 //         message: response.data.message,
@@ -31,29 +54,6 @@ const initialState = {
 //     }
 //   }
 // );
-
-// Second variant to get all menu items with search and category filters
-// We will make a request to the server to get all menu items with the filters applied but we will make a request each time we filter
-// Admin, User & Guest (to get all menu items includes search and category filters)
-export const getAllMenuItems = createAsyncThunk(
-  "menu/getAllMenuItems",
-  async ({ search, category }, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.get("/menu/items", {
-        search,
-        category,
-      });
-      return {
-        menuItems: response.data.menuItems,
-        message: response.data.message,
-      };
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to get menu items"
-      );
-    }
-  }
-);
 
 // Admin , User & Guest (to get a menu item)
 export const getMenuItemById = createAsyncThunk(
@@ -142,23 +142,43 @@ const menuSlice = createSlice({
       state.message = null;
     },
     // Fits the first variant
+
     // filterMenuItems: (state, action) => {
     //   state.selectedCategory = action.payload.category;
-    //   state.search = action.payload.search;
+    //   // state.search = action.payload.search;
 
-    //   if (action.payload.search) {
-    //     state.filteredItems = state.menuItems.filter((item) =>
-    //       item.name.toLowerCase().includes(action.payload.search.toLowerCase())
-    //     );
-    //   }
+    //   // if (action.payload.search) {
+    //   //   state.filteredItems = state.menuItems.filter((item) =>
+    //   //     item.name.toLowerCase().includes(action.payload.search.toLowerCase())
+    //   //   );
+    //   // }
+
     //   if (action.payload.category !== "all") {
     //     state.filteredItems = state.menuItems.filter(
-    //       (item) => item.category === action.payload
+    //       (item) => item.category === action.payload.category
     //     );
     //   } else {
     //     state.filteredItems = state.menuItems;
     //   }
     // },
+    filterMenuItems: (state, action) => {
+      const category = action.payload.category;
+      state.selectedCategory = category;
+
+      // IMPORTANT: Ensure menuItems exists before calling .filter()
+      if (!state.menuItems) {
+        state.filteredItems = [];
+        return;
+      }
+
+      if (category === "all") {
+        state.filteredItems = state.menuItems;
+      } else {
+        state.filteredItems = state.menuItems.filter(
+          (item) => item.category?.toLowerCase() === category.toLowerCase()
+        );
+      }
+    },
     resetMenuState: (state) => {
       state.menuItems = [];
       state.currentItem = null;
@@ -234,7 +254,7 @@ const menuSlice = createSlice({
       .addCase(deleteMenuItem.fulfilled, (state, action) => {
         state.isLoading = false;
         // Delete item from both lists
-        const deletedId = action.meta.arg;
+        const deletedId = action.payload;
 
         state.menuItems = state.menuItems.filter(
           (item) => item._id !== deletedId
@@ -252,5 +272,6 @@ const menuSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage, resetMenuState } = menuSlice.actions;
+export const { clearError, clearMessage, filterMenuItems, resetMenuState } =
+  menuSlice.actions;
 export default menuSlice.reducer;

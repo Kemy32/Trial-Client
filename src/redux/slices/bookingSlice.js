@@ -280,7 +280,7 @@ const bookingSlice = createSlice({
       .addCase(getAllUsersBookings.pending, handlePending)
       .addCase(getAllUsersBookings.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.bookings = action.payload.bookings;
+        state.bookings = action.payload.booking;
         state.message = action.payload.message;
       })
       .addCase(getAllUsersBookings.rejected, handleRejected)

@@ -1,0 +1,3 @@
+* Adjust responsivity in all pages
+* Check image upload
+* Phone number is not saved as null when left empty while registing

@@ -1,0 +1,104 @@
+import { Link } from "react-router-dom";
+export function MenuCard(props) {
+  return (
+    <>
+      <div className="bg-white p-6 md:p-8 border border-coffee rounded-lg text-center shadow-sm">
+        <div className="w-20 h-20 mx-auto mb-6 bg-light-coffee rounded-full flex items-center justify-center">
+          <img src={props.iconLink} alt={props.alt} className="w-9.5"></img>
+        </div>
+        <h1 className="text-xl font-bold mb-4">{props.heading}</h1>
+        <p className="mb-4">{props.description}</p>
+        <Link
+          key={props.cardKey}
+          to={props.link}
+          className="text-crimson text-sm px-2 py-1 font-bold border-2 border-white rounded-full hover:bg-coffee hover:border-coffee hover:shadow-lg transition"
+        >
+          {props.linkText}
+        </Link>
+      </div>
+    </>
+  );
+}
+export function MenuItemCard(props) {
+  return (
+    <div className="max-w-[280px] bg-white border border-light-coffee rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      {/* 1. Image Section */}
+      <div className="w-full h-48">
+        <img
+          src={props.imgLink}
+          alt={props.alt}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* 2. Content Section */}
+      <div className="p-6 flex flex-col items-center text-center gap-3">
+        {/* Price */}
+        <span className="text-crimson font-bold text-xl">{props.price}</span>
+
+        {/* Title */}
+        <h3 className="text-dark-gray font-extrabold text-lg leading-tight">
+          {props.title}
+        </h3>
+
+        {/* Description */}
+        <p className="text-gray-500 text-sm leading-relaxed">
+          {props.description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function ServiceCard(props) {
+  return (
+    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+      <div className="w-full pt-[75%] relative">
+        <img
+          src={props.imgLink}
+          alt={props.alt}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="p-4">
+        <h3 className="text-xl font-bold font-serif text-dark-gray mb-2">
+          {props.title}
+        </h3>
+        <p className="text-sm text-dark-gray leading-relaxed">
+          {props.description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function TestimonialCard(props) {
+  return (
+    <div className="bg-light-coffee px-7 py-8 rounded-lg text-left max-w-xs min-w-[280px]">
+      <div className="mb-6 pb-5 border-b border-grayish">
+        <h1 className="text-xl whitespace-nowrap font-bold text-crimson mb-3">
+          {props.heading}
+        </h1>
+        <p className="text-dark-gray text-sm">{props.paragraph}</p>
+      </div>
+      <div className="flex items-center">
+        <div className="w-10 h-10 mr-3 overflow-hidden rounded-full">
+          <img
+            className="w-full h-full object-cover"
+            src={props.avatarLink}
+            alt=""
+          />
+        </div>
+        <div className="flex flex-col text-left ml-2">
+          <h2 className="text-black text-sm font-semibold mb-1">
+            {props.name}
+          </h2>
+          <p className="text-xs text-dark-gray">{props.location}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function BlogArticleCard() {}

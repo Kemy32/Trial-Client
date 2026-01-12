@@ -9,42 +9,17 @@ import RecipeFour from "../../assets/images/recipe-4.png";
 
 export default function Footer() {
   const SocialIcons = [
-    {
-      icon: Twitter,
-      href: "#",
-    },
-    {
-      icon: Facebook,
-      href: "#",
-    },
-    {
-      icon: Instagram,
-      href: "#",
-    },
-    {
-      icon: Github,
-      href: "#",
-    },
+    { icon: Twitter, href: "#" },
+    { icon: Facebook, href: "#" },
+    { icon: Instagram, href: "#" },
+    { icon: Github, href: "#" },
   ];
-
   const PageLinks = [
     { name: "Home", path: "/" },
-    {
-      name: "About",
-      path: "/about",
-    },
-    {
-      name: "Menu",
-      path: "/menu",
-    },
-    {
-      name: "Blogs-Articles",
-      path: "/blogs-articles",
-    },
-    {
-      name: "Contact",
-      path: "/contact",
-    },
+    { name: "About", path: "/about" },
+    { name: "Menu", path: "/menu" },
+    { name: "Blogs-Articles", path: "/blogs-articles" },
+    { name: "Contact", path: "/contact" },
   ];
   const UtilityLinks = [
     { name: "Login", path: "/login" },
@@ -59,16 +34,21 @@ export default function Footer() {
   return (
     <>
       <footer className="w-full bg-dark-gray text-white font-sans">
-        <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-8 border-b border-b-grayish">
-          {/* First column */}
-          <div>
+        {/* Main Footer Content */}
+        <div className="max-w-7xl mx-auto px-6 py-14 flex flex-col md:flex-row md:justify-between gap-8 border-b border-b-grayish">
+          {/* First column (Brand/Social) */}
+          <div className="md:w-1/5 w-full">
             <div className="flex items-center space-x-2 mb-4">
-              <img src={BistroBlissLogo} className="h-10 w-auto" alt="" />
+              <img
+                src={BistroBlissLogo}
+                className="h-10 w-auto"
+                alt="Bistro Bliss Logo"
+              />
               <span className="text-3xl font-heading font-bold">
                 Bistro Bliss
               </span>
             </div>
-            <p className="text-sm text-grayish mb-6">
+            <p className="text-sm text-coffee mb-6">
               In the new era of technology we look a in the future with
               certainty and pride to for our company and.
             </p>
@@ -79,20 +59,21 @@ export default function Footer() {
                   href={item.href}
                   className="p-2 rounded-full bg-crimson hover:bg-mid-gray transition-colors"
                 >
-                  <item.icon></item.icon>
+                  <item.icon className="w-4 h-4" />
                 </a>
               ))}
             </div>
           </div>
-          {/* Second column */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Pages</h4>
-            <ul className="space-y-3 text-sm">
+
+          {/* Second column (Pages) */}
+          <div className="md:w-auto w-1/2">
+            <h4 className="text-lg font-semibold mb-5">Pages</h4>
+            <ul className="space-y-2 text-sm">
               {PageLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-grayish hover:text-crimson transition-colors"
+                    className="text-coffee hover:text-crimson transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -100,15 +81,16 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          {/* Third column */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4"> Utility Pages</h4>
-            <ul className="space-y-3 text-sm">
+
+          {/* Third column (Utility Pages) */}
+          <div className="md:w-auto w-1/2">
+            <h4 className="text-lg font-semibold mb-5"> Utility Pages</h4>
+            <ul className="space-y-2 text-sm">
               {UtilityLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="text-grayish hover:text-crimson transition-colors"
+                    className="text-coffee hover:text-crimson transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -116,49 +98,37 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          {/* Fourth column */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">
+
+          {/* Fourth column (Recipes)*/}
+          <div className="md:w-1/4 w-full">
+            <h4 className="text-lg font-semibold mb-5">
               Taste Our Latest Recipes
             </h4>
+
             <div className="grid grid-cols-2 gap-2">
-              {/* Placeholder Image Grid (Replace with actual image components/sources) */}
-              <div className=" bg-grayish rounded-lg overflow-hidden">
-                <img
-                  src={RecipeOne}
-                  alt="Food 1"
-                  className="w-full h-full object-fill"
-                />
-              </div>
-              <div className=" bg-grayish rounded-lg overflow-hidden">
-                <img
-                  src={RecipeTwo}
-                  alt="Food 2"
-                  className="w-full h-full object-fill"
-                />
-              </div>
-              <div className=" bg-grayish rounded-lg overflow-hidden">
-                <img
-                  src={RecipeThree}
-                  alt="Food 3"
-                  className="w-full h-full object-fill"
-                />
-              </div>
-              <div className=" bg-grayish rounded-lg overflow-hidden">
-                <img
-                  src={RecipeFour}
-                  alt="Food 4"
-                  className="w-full h-full object-fill"
-                />
-              </div>
+              <RecipeImage src={RecipeOne} alt="Food 1" />
+              <RecipeImage src={RecipeTwo} alt="Food 2" />
+              <RecipeImage src={RecipeThree} alt="Food 3" />
+              <RecipeImage src={RecipeFour} alt="Food 4" />
             </div>
           </div>
         </div>
-        {/* Bottom section */}
-        <div className="max-w-7xl mx-auto px-6 py-4 text-center text-sm text-grayish">
-          <p>copyright @ 2025 AMIT. All rights reserved</p>
+
+        {/* Bottom section (Copyright) */}
+        <div className="max-w-7xl mx-auto px-6 py-4 text-center text-sm text-coffee border-t border-t-coffee">
+          <p>copyright @ 2025 Bistro Bliss. All rights reserved</p>
         </div>
       </footer>
     </>
   );
 }
+
+const RecipeImage = ({ src, alt }) => (
+  <div className="w-full pt-[100%] relative rounded-lg overflow-hidden shadow-md">
+    <img
+      src={src}
+      alt={alt}
+      className="absolute inset-0 w-full h-full object-cover"
+    />
+  </div>
+);

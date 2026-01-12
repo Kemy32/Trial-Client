@@ -7,6 +7,7 @@ const initialState = {
   isLoggedOut: true,
   isLoading: false,
 
+  isCredentialValid: false,
   // OTP-specific states
   pendingVerification: false, // User registered, waiting for OTP
   pendingEmail: null, // Email waiting for OTP verification
@@ -16,6 +17,7 @@ const initialState = {
   error: null,
   // Success messages
   message: null,
+  loggedOutMessage: null,
 };
 
 // User (to check if authenticated on app load)
@@ -51,9 +53,10 @@ export const login = createAsyncThunk(
       };
     } catch (error) {
       const isVerified = error.response?.data?.isVerified;
+      const isCredentialValid = error.response?.data?.isCredentialValid;
       const errorMessage = error.response?.data?.message || "Login failed";
 
-      if (!isVerified) {
+      if (!isVerified && isCredentialValid) {
         return rejectWithValue({
           message: errorMessage,
           email: email,
@@ -144,8 +147,8 @@ export const logout = createAsyncThunk(
     try {
       const response = await axiosInstance.post("/auth/logout");
       return {
-        message: response.data.message,
-        loggedOut: response.data.loggedOut,
+        loggedOutMessage: response.data.loggedOutMessage,
+        isLoggedOut: response.data.isLoggedOut,
       };
     } catch (error) {
       return rejectWithValue(error.repsonse?.data?.message || "Logout failed");
@@ -162,6 +165,7 @@ const authSlice = createSlice({
     },
     clearMessage: (state) => {
       state.message = null;
+      state.loggedOutMessage = null;
     },
 
     resetAuth: (state) => {
@@ -268,6 +272,7 @@ const authSlice = createSlice({
         state.pendingEmail = null;
         state.isVerified = false;
         state.message = null;
+        state.loggedOutMessage = "Logged out successfully";
       })
       .addCase(logout.rejected, handleRejected);
   },

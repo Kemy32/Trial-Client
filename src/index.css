@@ -2,16 +2,25 @@
 @import "tailwindcss";
 
 @theme {
+  /* Light Crimson */
+  --color-light-crimson: #ad343e50;
   /* Crimson */
   --color-crimson: #ad343e;
+  /* Red  */
+  --color-mid-red: #be1010;
+  /* Light coffee */
+  --color-light-coffee: #f4f5f3;
+  /* Coffee */
+  --color-coffee: #dbdfd0;
   /* Light Gray */
   --color-light-gray: #f9f9f7;
+
   /* Gray */
   --color-grayish: #cccccc;
   /* Mid Gray */
   --color-mid-gray: #585858;
   /* Dark Gray */
-  --color-dark-gray: #474747;
+  --color-dark-gray: #424040;
 
   /* White */
   --color-white: #ffffff;
@@ -23,4 +32,17 @@
 
   /* 2. Define a new font for headings using Playfair Display */
   --font-heading: "Playfair Display", serif;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-crimson);
+  border-radius: 10px;
 }

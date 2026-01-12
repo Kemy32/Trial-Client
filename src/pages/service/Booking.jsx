@@ -1,9 +1,9 @@
-import BookingForm from "../../components/forms/BookingForm";
+import BookingSection from "../../components/sections/booking/BookingSection";
+
 export default function Booking() {
   return (
-    <div className="container">
-      <h1>Booking Page</h1>
-      <BookingForm />
-    </div>
+    <>
+      <BookingSection />
+    </>
   );
 }

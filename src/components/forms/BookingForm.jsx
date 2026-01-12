@@ -72,94 +72,128 @@ export default function BookingForm() {
   };
 
   return (
-    <div className="auth-card">
-      <h2 className="auth-title">Reservation</h2>
-      <p className="auth-subtitle">
-        We consider all the drivers of change gives you the components you need
-        to change to create a truly happens.
-      </p>
+    <div className="max-w-2xl w-full space-y-8 p-10 bg-white rounded-xl shadow-lg">
       <Formik
         initialValues={initialValues}
         validationSchema={bookingSchema}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, errors, touched }) => (
-          <Form className="auth-form">
-            {/* Date Field */}
-            <div className="form-group">
-              <label htmlFor="date">Date</label>
-              <Field
-                type="date"
-                name="date"
-                id="date"
-                className={`form-input ${
-                  errors.date && touched.date ? "input-error" : ""
-                }`}
-              />
-              <ErrorMessage
-                name="date"
-                component="div"
-                className="field-error"
-              />
+          <Form className="space-y-6">
+            {/* Date and Time  */}
+            <div className="flex flex-col sm:flex-row gap-6">
+              {/* Date Field */}
+              <div className="w-full sm:w-1/2 flex flex-col gap-0.5">
+                <label
+                  className="font-semibold text-sm text-dark-gray mb-1.5"
+                  htmlFor="date"
+                >
+                  Date
+                </label>
+                <Field
+                  type="date"
+                  name="date"
+                  id="date"
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
+                    errors.date && touched.date
+                      ? "outline-1 outline-mid-red border-mid-red"
+                      : ""
+                  }`}
+                />
+                <ErrorMessage
+                  name="date"
+                  component="div"
+                  className="text-crimson mt-0.5 text-xs"
+                />
+              </div>
+              {/* Time Field */}
+              <div className="w-full sm:w-1/2 flex flex-col gap-0.5">
+                <label
+                  className="font-semibold text-sm text-dark-gray mb-1.5"
+                  htmlFor="time"
+                >
+                  Time
+                </label>
+
+                <Field
+                  type="time"
+                  name="time"
+                  id="time"
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
+                    errors.time && touched.time
+                      ? "outline-1 outline-mid-red border-mid-red"
+                      : ""
+                  }`}
+                />
+
+                <ErrorMessage
+                  name="time"
+                  component="div"
+                  className="text-crimson mt-0.5 text-xs"
+                />
+              </div>
             </div>
 
-            {/* Time Field */}
-            <div className="form-group">
-              <label htmlFor="time">Time</label>
-              <Field
-                type="time"
-                name="time"
-                id="time"
-                className={`form-input ${
-                  errors.time && touched.time ? "input-error" : ""
-                }`}
-              />
-              <ErrorMessage
-                name="time"
-                component="div"
-                className="field-error"
-              />
+            <div className="flex flex-col sm:flex-row gap-6">
+              {/* Name Field */}
+              <div className="w-full sm:w-1/2 flex flex-col gap-0.5">
+                <label
+                  className="font-semibold text-sm text-dark-gray mb-1.5"
+                  htmlFor="name"
+                >
+                  Name
+                </label>
+                <Field
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="John Doe"
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
+                    errors.name && touched.name
+                      ? "outline-1 outline-mid-red border-mid-red"
+                      : ""
+                  }`}
+                />
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="text-crimson mt-0.5 text-xs"
+                />
+              </div>
+              {/* Phone Field */}
+              <div className="w-full sm:w-1/2 flex flex-col gap-0.5">
+                <label
+                  className="font-semibold text-sm text-dark-gray mb-1.5"
+                  htmlFor="phone"
+                >
+                  Phone
+                </label>
+                <Field
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  placeholder="123-456-7890"
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
+                    errors.phone && touched.phone
+                      ? "outline-1 outline-mid-red border-mid-red"
+                      : ""
+                  }`}
+                />
+                <ErrorMessage
+                  name="phone"
+                  component="div"
+                  className="text-crimson mt-0.5 text-xs"
+                />
+              </div>
             </div>
-            {/* Name Field */}
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <Field
-                type="text"
-                name="name"
-                id="name"
-                placeholder="John Doe"
-                className={`form-input ${
-                  errors.name && touched.name ? "input-error" : ""
-                }`}
-              />
-              <ErrorMessage
-                name="name"
-                component="div"
-                className="field-error"
-              />
-            </div>
-            {/* Phone Field */}
-            <div className="form-group">
-              <label htmlFor="phone">Phone</label>
-              <Field
-                type="tel"
-                name="phone"
-                id="phone"
-                placeholder="123-456-7890"
-                className={`form-input ${
-                  errors.phone && touched.phone ? "input-error" : ""
-                }`}
-              />
-              <ErrorMessage
-                name="phone"
-                component="div"
-                className="field-error"
-              />
-            </div>
-
             {/* Total Persons Field */}
-            <div className="form-group">
-              <label htmlFor="totalPersons">Total Persons</label>
+            <div className="w-full flex flex-col gap-0.5">
+              <label
+                className="font-semibold text-sm text-dark-gray mb-1.5"
+                htmlFor="totalPersons"
+              >
+                Total Persons
+              </label>
               <Field
                 type="number"
                 name="totalPersons"
@@ -167,29 +201,29 @@ export default function BookingForm() {
                 placeholder="1"
                 min="1"
                 max="12"
-                className={`form-input ${
+                className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
                   errors.totalPersons && touched.totalPersons
-                    ? "input-error"
+                    ? "outline-1 outline-mid-red border-mid-red"
                     : ""
                 }`}
               />
               <ErrorMessage
                 name="totalPersons"
                 component="div"
-                className="field-error"
+                className="text-crimson mt-0.5 text-xs"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting || isLoading}
-              className="btn btn-primary btn-full"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-crimson hover:bg-coffee hover:text-crimson disabled:bg-crimson disabled:opacity-50"
             >
               {isLoading ? (
-                <>
+                <div className="flex flex-row">
                   <span className="spinner"></span>
-                  Processing...
-                </>
+                  Booking...
+                </div>
               ) : (
                 "Book a table"
               )}

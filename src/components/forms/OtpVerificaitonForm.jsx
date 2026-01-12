@@ -15,7 +15,7 @@ import "../../styles/forms.css";
 function OtpVerificationForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, message, isAuthenticated, pendingEmail } =
+  const { isLoading, error, message, isAuthenticated, pendingEmail, user } =
     useSelector((state) => state.auth);
 
   const [countdown, setCountdown] = useState(0);
@@ -35,7 +35,7 @@ function OtpVerificationForm() {
     if (isAuthenticated) {
       navigate("/");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, user]);
 
   useEffect(() => {
     if (error) {
@@ -85,34 +85,42 @@ function OtpVerificationForm() {
   };
 
   return (
-    <div className="auth-card">
+    <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-lg">
       <Formik
         initialValues={initialValues}
         validationSchema={otpSchema}
         onSubmit={handleVerifyOtp}
       >
         {({ isSubmitting, values, errors, touched }) => (
-          <Form className="auth-form">
-            <div className="form-group">
-              <label htmlFor="otp">Enter OTP Code</label>
+          <Form className="space-y-6">
+            <div className="flex flex-col gap-0.5 -space-y-px">
+              <label
+                className="font-semibold text-sm text-dark-gray mb-1.5"
+                htmlFor="otp"
+              >
+                Enter OTP Code
+              </label>
               <Field
                 type="text"
                 name="otp"
                 id="otp"
                 placeholder="Enter 6 digits"
                 maxLength={6}
-                className={`form-input otp-input ${
-                  errors.otp && touched.otp ? "input-error" : ""
+                className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
+                  errors.otp && touched.otp
+                    ? "outline-1 outline-mid-red border-mid-red"
+                    : ""
                 }`}
               />
               <ErrorMessage
                 name="otp"
                 component="div"
-                className="field-error"
+                className="text-crimson mt-0.5 text-xs"
               />
             </div>
             <button
               type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-crimson hover:bg-coffee disabled:hover:text-white hover:text-crimson disabled:bg-crimson disabled:opacity-50"
               disabled={
                 isSubmitting ||
                 isLoading ||
@@ -121,10 +129,10 @@ function OtpVerificationForm() {
               }
             >
               {isLoading ? (
-                <>
+                <div className="flex items-center justify-center gap-2">
                   <span className="loader"></span>
                   Verifying...
-                </>
+                </div>
               ) : (
                 "Verify OTP"
               )}
@@ -132,17 +140,20 @@ function OtpVerificationForm() {
           </Form>
         )}
       </Formik>
-      <div className="otp-resend">
-        <p>Didn't receive the code?</p>
+      <div className="my-5 flex items-center flex-col">
+        <p className="text-center text-sm text-mid-gray">
+          Didn't receive the code?
+        </p>
         <button
+          className="font-medium text-crimson hover:text-mid-red"
           onClick={handelResendOtp}
           disabled={countdown > 0 || resendLoading}
         >
           {resendLoading ? (
-            <>
+            <div className="flex items-center justify-center gap-2">
               <span className="loader"></span>
               Resending...
-            </>
+            </div>
           ) : countdown > 0 ? (
             `Resend in ${countdown} seconds`
           ) : (
@@ -150,11 +161,6 @@ function OtpVerificationForm() {
           )}
         </button>
       </div>
-      <p className="auth-footer">
-        <Link to="/register" className="auth-link">
-          Back to registration
-        </Link>
-      </p>
     </div>
   );
 }

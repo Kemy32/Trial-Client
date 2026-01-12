@@ -62,6 +62,7 @@ export default function RegisterForm() {
     }
   }, [error, message, dispatch]);
 
+  // Clear error and message on unmount
   useEffect(() => {
     return () => {
       dispatch(clearError());
@@ -84,9 +85,13 @@ export default function RegisterForm() {
 
   return (
     <>
-      <div className="auth-card">
-        <h2 className="auth-title">Create Account</h2>
-        <p className="auth-subtitle">Sign up to get started</p>
+      <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-lg">
+        <h2 className="mt-6 mb-2 text-center text-3xl font-extrabold text-dark-gray">
+          Create Account
+        </h2>
+        <p className="text-center text-sm text-mid-gray">
+          Sign up to get started
+        </p>
 
         <Formik
           initialValues={initialValues}
@@ -94,80 +99,108 @@ export default function RegisterForm() {
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, setFieldValue, errors, touched }) => (
-            <Form className="auth-form">
+            <Form className="mt-8 space-y-6">
               {/* Name Field */}
-              <div className="form-group">
-                <label htmlFor="name">Full Name</label>
+              <div className="flex flex-col gap-0.5 -space-y-px">
+                <label
+                  className="font-semibold text-sm text-dark-gray mb-1.5"
+                  htmlFor="name"
+                >
+                  Full Name
+                </label>
                 <Field
                   type="text"
                   name="name"
                   id="name"
                   placeholder="John Doe"
-                  className={`form-input ${
-                    errors.name && touched.name ? "input-error" : ""
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
+                    errors.name && touched.name
+                      ? "outline-1 outline-mid-red border-mid-red"
+                      : ""
                   }`}
                 />
                 <ErrorMessage
                   name="name"
                   component="div"
-                  className="field-error"
+                  className="text-crimson mt-0.5 text-xs"
                 />
               </div>
 
               {/* Email Field */}
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
+              <div className="flex flex-col gap-0.5 -space-y-px">
+                <label
+                  className="font-semibold text-sm text-dark-gray mb-1.5"
+                  htmlFor="email"
+                >
+                  Email Address
+                </label>
                 <Field
                   type="email"
                   name="email"
                   id="email"
                   placeholder="john@example.com"
-                  className={`form-input ${
-                    errors.email && touched.email ? "input-error" : ""
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
+                    errors.email && touched.email
+                      ? "outline-1 outline-mid-red border-mid-red"
+                      : ""
                   }`}
                 />
                 <ErrorMessage
                   name="email"
                   component="div"
-                  className="field-error"
+                  className="text-crimson mt-0.5 text-xs"
                 />
               </div>
 
               {/* Phone Field */}
-              <div className="form-group">
-                <label htmlFor="phone">Phone Number (Optional)</label>
+              <div className="flex flex-col gap-0.5 -space-y-px">
+                <label
+                  className="font-semibold text-sm text-dark-gray mb-1.5"
+                  htmlFor="phone"
+                >
+                  Phone Number (Optional)
+                </label>
                 <Field
                   type="tel"
                   name="phone"
                   id="phone"
                   placeholder="123-456-7890"
-                  className={`form-input ${
-                    errors.phone && touched.phone ? "input-error" : ""
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
+                    errors.phone && touched.phone
+                      ? "outline-1 outline-mid-red border-mid-red"
+                      : ""
                   }`}
                 />
                 <ErrorMessage
                   name="phone"
                   component="div"
-                  className="field-error"
+                  className="text-crimson mt-0.5 text-xs"
                 />
               </div>
 
               {/* Password Field */}
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <div className="password-input-wrapper">
+              <div className="flex flex-col gap-0.5 -space-y-px">
+                <label
+                  className="font-semibold text-sm text-dark-gray mb-1.5"
+                  htmlFor="password"
+                >
+                  Password
+                </label>
+                <div className="relative">
                   <Field
                     type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     placeholder="••••••••"
-                    className={`form-input ${
-                      errors.password && touched.password ? "input-error" : ""
+                    className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
+                      errors.password && touched.password
+                        ? "outline-1 outline-mid-red border-mid-red"
+                        : ""
                     }`}
                   />
                   <button
                     type="button"
-                    className="password-toggle"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 text-mid-gray focus:outline-none"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <Eye /> : <EyeClosed />}
@@ -176,11 +209,13 @@ export default function RegisterForm() {
                 <ErrorMessage
                   name="password"
                   component="div"
-                  className="field-error"
+                  className="text-crimson mt-0.5 text-xs"
                 />
               </div>
+
+              {/* Needs modifications */}
               {/* Profile Image Field */}
-              <div className="form-group">
+              {/* <div className="form-group rounded-md -space-y-px">
                 <label htmlFor="profile_image">Profile Image (Optional)</label>
                 <input
                   type="file"
@@ -202,7 +237,8 @@ export default function RegisterForm() {
                       setPreviewImage(null);
                     }
                   }}
-                  className={`form-input file-input ${
+                  // form-input file-input
+                  className={`appearance-none rounded-none relative block w-full px-3 py-3 bg-light-coffee border-dark-gray border-2 placeholder-grayish text-mid-gray rounded-b-md rounded-t-md focus:outline-none focus:ring-white focus:border-white focus:z-10 sm:text-sm ${
                     errors.profile_image && touched.profile_image
                       ? "input-error"
                       : ""
@@ -219,28 +255,31 @@ export default function RegisterForm() {
                     <img src={previewImage} alt="Preview" />
                   </div>
                 )}
-              </div>
+              </div> */}
 
               {/* Submit Button */}
               <button
                 type="submit"
                 disabled={isSubmitting || isLoading}
-                className="btn btn-primary btn-full"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-crimson hover:bg-coffee hover:text-crimson disabled:bg-crimson disabled:opacity-50"
               >
                 {isLoading ? (
-                  <>
+                  <div className="flex items-center justify-center gap-2 ">
                     <span className="spinner"></span>
                     Creating Account...
-                  </>
+                  </div>
                 ) : (
                   "Create Account"
                 )}
               </button>
 
               {/* Login Link */}
-              <p className="auth-footer">
+              <p className="text-center text-sm text-mid-gray">
                 Already have an account?
-                <Link to="/login" className="auth-link">
+                <Link
+                  to="/login"
+                  className="font-medium text-crimson hover:text-mid-red ml-1"
+                >
                   Sign in
                 </Link>
               </p>

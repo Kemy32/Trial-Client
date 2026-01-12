@@ -22,6 +22,7 @@ import Register from "./pages//auth/Register.jsx";
 import VerifyOtp from "./pages//auth/VerifyOtp.jsx";
 
 import AdminPanel from "./pages/admin/AdminPanel.jsx";
+import AdminProfile from "./components/sections/admin/AdminProfile.jsx";
 
 import Booking from "./pages/service/Booking.jsx";
 import UserProfile from "./pages/user/UserProfile.jsx";
@@ -30,6 +31,8 @@ import MyBookings from "./pages/user/MyBookings.jsx";
 import Unauthorized from "./pages/auth/Unauthorized.jsx";
 import NotFound from "./pages/errors/NotFound.jsx";
 import Logout from "./pages/auth/Logout.jsx";
+import Navbar from "./components/layout/Navbar.jsx";
+import DashboardLayout from "./components/layout/DashboardLayout.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -56,6 +59,7 @@ function App() {
         theme="light"
       />
       <HeaderBar />
+      <Navbar />
 
       <Routes>
         {/* Home */}
@@ -80,16 +84,32 @@ function App() {
 
         {/* Protected Routes for Admin */}
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-          <Route path="/admin/admin-panel" element={<AdminPanel />} />
-          <Route path="/admin/profile" element={<UserProfile />}></Route>
-          <Route path="/admin/users" element={<h1>Users List</h1>}></Route>
-          <Route path="/admin/bookings" element={<Booking />} />
+          <Route element={<DashboardLayout />}>
+            <Route path="/admin/my-profile" element={<AdminProfile />}></Route>
+            <Route path="/admin/users" element={<h1>Users List</h1>}></Route>
+            <Route path="/admin/bookings" element={<h1>Bookings List</h1>} />
+            <Route
+              path="/admin/menu"
+              element={<h1>Menu Items List</h1>}
+            ></Route>
+            <Route
+              path="/admin/blogs"
+              element={<h1>Blogs and Articles</h1>}
+            ></Route>
+            <Route path="/admin/contacts" element={<h1>Messages</h1>}></Route>
+          </Route>
         </Route>
 
         {/* Protected Routes for User */}
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-          <Route path="/user/profile" element={<UserProfile />}></Route>
-          <Route path="/user/my-bookings" element={<MyBookings />}></Route>
+          <Route element={<DashboardLayout />}>
+            <Route path="/user/my-profile" element={<UserProfile />}></Route>
+            <Route path="/user/my-bookings" element={<MyBookings />}></Route>
+            <Route
+              path="/user/notifications"
+              element={<h1>Notifications</h1>}
+            ></Route>
+          </Route>
         </Route>
 
         {/* Unauthorized */}
