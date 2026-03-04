@@ -11,9 +11,10 @@ import { toast } from "react-toastify";
 
 export default function BlogsArticlesSection() {
   const dispatch = useDispatch();
-  const { error, message, isLoading, blogsArticles } = useSelector(
-    (state) => state.blog,
-  );
+  const { error, message, isLoading, blogsArticles } = useSelector((state) => {
+    console.log(state, "Test");
+    return state.blog;
+  });
 
   useEffect(() => {
     if (error) {
