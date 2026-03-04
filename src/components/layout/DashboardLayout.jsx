@@ -13,7 +13,7 @@ export default function DashboardLayout() {
     <div className="flex min-h-screen bg-light-coffee">
       {shouldRenderSidebar && <SideNavbar />}
 
-      <main className="">
+      <main className="mt-10">
         {/* Outlet renders the specific child route component (e.g., UserProfile, Bookings List) */}
         <Outlet />
       </main>

@@ -21,28 +21,25 @@ export function MenuCard(props) {
 }
 export function MenuItemCard(props) {
   return (
-    <div className="max-w-[280px] bg-white border border-light-coffee rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-      {/* 1. Image Section */}
-      <div className="w-full h-48">
+    <div className="flex flex-col h-full bg-white border border-light-coffee rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+      <div className="w-full aspect-16/11 overflow-hidden">
         <img
           src={props.imgLink}
-          alt={props.alt}
-          className="w-full h-full object-cover"
+          alt={props.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
       </div>
 
-      {/* 2. Content Section */}
-      <div className="p-6 flex flex-col items-center text-center gap-3">
-        {/* Price */}
-        <span className="text-crimson font-bold text-xl">{props.price}</span>
+      <div className="p-6 flex flex-col items-center text-center grow">
+        <span className="text-crimson font-bold text-xl mb-2">
+          {props.price}
+        </span>
 
-        {/* Title */}
-        <h3 className="text-dark-gray font-extrabold text-lg leading-tight">
+        <h3 className="text-dark-gray font-extrabold text-lg leading-tight mb-3 line-clamp-1">
           {props.title}
         </h3>
 
-        {/* Description */}
-        <p className="text-gray-500 text-sm leading-relaxed">
+        <p className="text-gray-500 text-sm leading-relaxed line-clamp-3">
           {props.description}
         </p>
       </div>
@@ -101,4 +98,51 @@ export function TestimonialCard(props) {
   );
 }
 
-export function BlogArticleCard() {}
+export function BlogArticleCard(props) {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  };
+
+  return (
+    <div
+      className={`bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col h-full w-full`}
+    >
+      {/* Aspect Ratio Container for Image */}
+      <div
+        className={`relative w-full overflow-hidden ${
+          props.size === "big"
+            ? "aspect-[4/3] md:aspect-auto md:h-full"
+            : "aspect-[16/10]"
+        }`}
+      >
+        <img
+          src={props.imgLink}
+          alt={props.title}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Content Section */}
+      <div className="p-5 flex flex-col flex-grow text-left gap-3">
+        <span className="text-gray-400 font-medium text-xs">
+          {formatDate(props.date)}
+        </span>
+
+        <h3 className="text-dark-gray font-bold text-lg md:text-xl leading-snug line-clamp-2">
+          {props.title}
+        </h3>
+
+        {props.size === "big" && (
+          <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">
+            {props.description}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}

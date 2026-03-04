@@ -122,8 +122,7 @@ export default function SideNavbar() {
   };
 
   return (
-    <div className="w-64 h-fit bg-white text-crimson p-4 rounded-xl shadow-md">
-      {/* Navigation Links */}
+    <div className="w-64 h-fit bg-white text-crimson p-4 rounded-xl shadow-md mt-10 ml-33 mr-10">
       <nav className="flex flex-col items-center">{renderNavbar()}</nav>
     </div>
   );

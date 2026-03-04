@@ -71,6 +71,8 @@ export default function BookingForm() {
     setSubmitting(false);
   };
 
+  const today = new Date().toISOString().split("T")[0];
+
   return (
     <div className="max-w-2xl w-full space-y-8 p-10 bg-white rounded-xl shadow-lg">
       <Formik
@@ -94,6 +96,8 @@ export default function BookingForm() {
                   type="date"
                   name="date"
                   id="date"
+                  // to set min date to today
+                  min={today}
                   className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
                     errors.date && touched.date
                       ? "outline-1 outline-mid-red border-mid-red"

@@ -14,14 +14,41 @@ export const getAllUsers = createAsyncThunk(
   "admin/users",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get("/users");
+      const response = await axiosInstance.get("/admin/users");
       return { users: response.data.users, message: response.data.message };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch users"
+        error.response?.data?.message || "Failed to fetch users",
       );
     }
-  }
+  },
+);
+
+// Admin - Update own profile
+export const updateAdminProfile = createAsyncThunk(
+  "admin/updateProfile",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      if (userData.name) formData.append("name", userData.name);
+      if (userData.email) formData.append("email", userData.email);
+      if (userData.phone) formData.append("phone", userData.phone);
+      if (userData.password) formData.append("password", userData.password);
+
+      const response = await axiosInstance.put("/admin/profile", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      return {
+        user: response.data.updatedUser,
+        message: "Admin profile updated successfully",
+      };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to update admin profile",
+      );
+    }
+  },
 );
 
 // Admin - Get user by ID
@@ -29,14 +56,29 @@ export const getUserById = createAsyncThunk(
   "admin/user",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`/users/${userId}`);
+      const response = await axiosInstance.get(`/admin/users/${userId}`);
       return { user: response.data.user, message: response.data.message };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch user"
+        error.response?.data?.message || "Failed to fetch user",
       );
     }
-  }
+  },
+);
+
+// Admin - Delete any user by ID
+export const deleteUserById = createAsyncThunk(
+  "admin/deleteUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.delete(`/admin/users/${userId}`);
+      return { id: userId, message: response.data.message };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to delete user",
+      );
+    }
+  },
 );
 
 // User - Get own profile
@@ -44,14 +86,14 @@ export const getUserProfile = createAsyncThunk(
   "user/my-profile",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get("/users/profile");
-      return response.data;
+      const response = await axiosInstance.get("/user/profile");
+      return response.data; // Assuming this returns the user object directly
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch profile"
+        error.response?.data?.message || "Failed to fetch profile",
       );
     }
-  }
+  },
 );
 
 // User - Update own profile
@@ -59,9 +101,7 @@ export const updateUserProfile = createAsyncThunk(
   "user/updateUserProfile",
   async (userData, { rejectWithValue }) => {
     try {
-      // Create FormData for file upload
       const formData = new FormData();
-
       if (userData.name) formData.append("name", userData.name);
       if (userData.email) formData.append("email", userData.email);
       if (userData.phone) formData.append("phone", userData.phone);
@@ -70,10 +110,8 @@ export const updateUserProfile = createAsyncThunk(
         formData.append("profile_image", userData.profile_image);
       }
 
-      const response = await axiosInstance.put("/users/profile", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const response = await axiosInstance.put("/user/profile", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       return {
@@ -82,28 +120,27 @@ export const updateUserProfile = createAsyncThunk(
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update profile"
+        error.response?.data?.message || "Failed to update profile",
       );
     }
-  }
+  },
 );
 
-// User/Admin - Delete user account
-export const deleteUserAccount = createAsyncThunk(
-  "user/deleteUserAccount",
+// User - Delete user account (Self)
+export const deleteUserSelf = createAsyncThunk(
+  "user/deleteUserSelf",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.delete("/users/profile");
+      const response = await axiosInstance.delete("/user/profile");
       return {
-        user: response.data,
-        message: "Account deleted successfully",
+        message: response.data.message || "Account deleted successfully",
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete account"
+        error.response?.data?.message || "Failed to delete account",
       );
     }
-  }
+  },
 );
 
 const userSlice = createSlice({
@@ -125,7 +162,6 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Helper functions
     const handlePending = (state) => {
       state.isLoading = true;
       state.error = null;
@@ -143,15 +179,26 @@ const userSlice = createSlice({
       .addCase(getAllUsers.pending, handlePending)
       .addCase(getAllUsers.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.users = action.payload;
+        state.users = action.payload.users;
+        state.message = action.payload.message;
       })
       .addCase(getAllUsers.rejected, handleRejected)
+
+      // Update Admin Profile
+      .addCase(updateAdminProfile.pending, handlePending)
+      .addCase(updateAdminProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentUser = action.payload.user;
+        state.message = action.payload.message;
+      })
+      .addCase(updateAdminProfile.rejected, handleRejected)
 
       // Get User By ID
       .addCase(getUserById.pending, handlePending)
       .addCase(getUserById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentUser = action.payload;
+        state.currentUser = action.payload.user;
+        state.message = action.payload.message;
       })
       .addCase(getUserById.rejected, handleRejected)
 
@@ -172,14 +219,24 @@ const userSlice = createSlice({
       })
       .addCase(updateUserProfile.rejected, handleRejected)
 
-      // Delete User Account
-      .addCase(deleteUserAccount.pending, handlePending)
-      .addCase(deleteUserAccount.fulfilled, (state, action) => {
+      // Delete User Account (Self)
+      .addCase(deleteUserSelf.pending, handlePending)
+      .addCase(deleteUserSelf.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentUser = null;
         state.message = action.payload.message;
       })
-      .addCase(deleteUserAccount.rejected, handleRejected);
+      .addCase(deleteUserSelf.rejected, handleRejected)
+
+      // Delete User By ID (Admin Action)
+      .addCase(deleteUserById.pending, handlePending)
+      .addCase(deleteUserById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // action.payload is { id, message }
+        state.users = state.users.filter((u) => u._id !== action.payload.id);
+        state.message = action.payload.message;
+      })
+      .addCase(deleteUserById.rejected, handleRejected);
   },
 });
 

@@ -31,10 +31,10 @@ export const checkAuth = createAsyncThunk(
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Not authenticated"
+        error.response?.data?.message || "Not authenticated",
       );
     }
-  }
+  },
 );
 
 // Guest (to log in)
@@ -64,7 +64,7 @@ export const login = createAsyncThunk(
       }
       return rejectWithValue(errorMessage);
     }
-  }
+  },
 );
 
 // Guest (to register)
@@ -94,10 +94,10 @@ export const register = createAsyncThunk(
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Registration failed"
+        error.response?.data?.message || "Registration failed",
       );
     }
-  }
+  },
 );
 
 // Guest (to verify OTP)
@@ -117,10 +117,10 @@ export const verifyOtp = createAsyncThunk(
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "OTP verification failed"
+        error.response?.data?.message || "OTP verification failed",
       );
     }
-  }
+  },
 );
 
 // Guest (to resend OTP)
@@ -134,10 +134,10 @@ export const resendOtp = createAsyncThunk(
       return response.data.message;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "OTP resend failed"
+        error.response?.data?.message || "OTP resend failed",
       );
     }
-  }
+  },
 );
 
 // User (to log out)
@@ -153,7 +153,7 @@ export const logout = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.repsonse?.data?.message || "Logout failed");
     }
-  }
+  },
 );
 
 const authSlice = createSlice({
@@ -181,14 +181,12 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Helper function for consistent handling of pending state
     const handlePending = (state) => {
       state.isLoading = true;
       state.error = null;
       state.message = null;
     };
 
-    // Helper function for consistent handling of rejected state
     const handleRejected = (state, action) => {
       state.isLoading = false;
       state.error = action.payload;

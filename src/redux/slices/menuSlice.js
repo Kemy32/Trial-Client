@@ -21,15 +21,15 @@ export const getAllMenuItems = createAsyncThunk(
     try {
       const response = await axiosInstance.get("/menu/items");
       return {
-        menuItems: response.data,
+        menuItems: response.data.menuItems,
         message: response.data.message,
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to get menu items"
+        error.response?.data?.message || "Failed to get menu items",
       );
     }
-  }
+  },
 );
 
 // Second variant to get all menu items with search and category filters
@@ -67,68 +67,75 @@ export const getMenuItemById = createAsyncThunk(
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to get menu item by id"
+        error.response?.data?.message || "Failed to get menu item by id",
       );
     }
-  }
+  },
 );
 
 // Admin (to create a menu item)
 export const createMenuItem = createAsyncThunk(
-  "menu/createMenuItem",
+  "admin/menu/createMenuItem",
   async (menuItemData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/menu/item", menuItemData);
+      const response = await axiosInstance.post(
+        "/admin/menu/item",
+        menuItemData,
+      );
       return {
         menuItem: response.data.menuItem,
         message: response.data.message,
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to create menu item"
+        error.response?.data?.message || "Failed to create menu item",
       );
     }
-  }
+  },
 );
 
 // Admin (to update menu item)
 export const updateMenuItem = createAsyncThunk(
-  "menu/updateMenuItem",
+  "admin/menu/updateMenuItem",
   async ({ id, menuItemData }, { rejectWithValue }) => {
     try {
-      const formData = new FormData();
-      for (const key in menuItemData) {
-        formData.append(key, menuItemData[key]);
-      }
+      // Used for updating menu item image
+      // const formData = new FormData();
+      // for (const key in menuItemData) {
+      //   formData.append(key, menuItemData[key]);
+      // }
 
-      const response = await axiosInstance.put(`/menu/items/${id}`, formData);
+      const response = await axiosInstance.put(
+        `/admin/menu/items/${id}`,
+        menuItemData,
+      );
       return {
         menuItem: response.data.menuItem,
         message: response.data.message,
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update menu item"
+        error.response?.data?.message || "Failed to update menu item",
       );
     }
-  }
+  },
 );
 
 // Admin (to delete menu item)
 export const deleteMenuItem = createAsyncThunk(
-  "menu/deleteMenuItem",
+  "admin/menu/deleteMenuItem",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.delete(`/menu/items/${id}`);
+      const response = await axiosInstance.delete(`/admin/menu/items/${id}`);
       return {
         message: response.data.message,
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete menu item"
+        error.response?.data?.message || "Failed to delete menu item",
       );
     }
-  }
+  },
 );
 
 const menuSlice = createSlice({
@@ -175,7 +182,7 @@ const menuSlice = createSlice({
         state.filteredItems = state.menuItems;
       } else {
         state.filteredItems = state.menuItems.filter(
-          (item) => item.category?.toLowerCase() === category.toLowerCase()
+          (item) => item.category?.toLowerCase() === category.toLowerCase(),
         );
       }
     },
@@ -200,7 +207,7 @@ const menuSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
       state.message = null;
-    }; // Helper function to find and update an item in both lists
+    };
 
     const findAndUpdateItem = (state, updatedItem) => {
       const updateList = (list) => {
@@ -257,10 +264,10 @@ const menuSlice = createSlice({
         const deletedId = action.payload;
 
         state.menuItems = state.menuItems.filter(
-          (item) => item._id !== deletedId
+          (item) => item._id !== deletedId,
         );
         state.filteredItems = state.filteredItems.filter(
-          (item) => item._id !== deletedId
+          (item) => item._id !== deletedId,
         );
 
         if (state.currentItem?._id === deletedId) {

@@ -16,7 +16,7 @@ import "../../styles/forms.css";
 export default function RegisterForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [previewImage, setPreviewImage] = useState(null);
+  // const [previewImage, setPreviewImage] = useState(null);
   const { isLoading, error, message, pendingVerification, isAuthenticated } =
     useSelector((state) => state.auth);
 

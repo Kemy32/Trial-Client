@@ -1,3 +1,9 @@
+import MainSection from "../../components/sections/blogArticle/MainSection";
+
 export default function BlogArticle() {
-  return <h1>Blog Article Page</h1>;
+  return (
+    <>
+      <MainSection />
+    </>
+  );
 }

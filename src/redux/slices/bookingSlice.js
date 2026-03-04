@@ -25,10 +25,10 @@ export const createBooking = createAsyncThunk(
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to create booking"
+        error.response?.data?.message || "Failed to create booking",
       );
     }
-  }
+  },
 );
 
 // User (to get his bookings)
@@ -43,10 +43,10 @@ export const getUserBookings = createAsyncThunk(
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to get user's bookings"
+        error.response?.data?.message || "Failed to get user's bookings",
       );
     }
-  }
+  },
 );
 
 // User (to get a specific booking)
@@ -58,10 +58,10 @@ export const getBookingById = createAsyncThunk(
       return { booking: response.data.booking, message: response.data.message };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to get booking by id"
+        error.response?.data?.message || "Failed to get booking by id",
       );
     }
-  }
+  },
 );
 
 // User (to cancel a booking)
@@ -70,15 +70,15 @@ export const cancelBooking = createAsyncThunk(
   async ({ bookingId, bookingStatus }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.patch(`/bookings/${bookingId}`, {
-        bookingStatus,
+        status: bookingStatus,
       });
       return { booking: response.data.booking, message: response.data.message };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to cancel booking"
+        error.response?.data?.message || "Failed to cancel booking",
       );
     }
-  }
+  },
 );
 
 // Admin (to get all bookings)
@@ -93,10 +93,10 @@ export const getAllUsersBookings = createAsyncThunk(
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to get users' bookings"
+        error.response?.data?.message || "Failed to get users' bookings",
       );
     }
-  }
+  },
 );
 
 // Admin (to get user's bookings)
@@ -105,7 +105,7 @@ export const getUserAllBookings = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(
-        `/admin/users/${userId}/bookings`
+        `/admin/users/${userId}/bookings`,
       );
       return {
         bookings: response.data.bookings,
@@ -113,34 +113,36 @@ export const getUserAllBookings = createAsyncThunk(
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to get user's bookings"
+        error.response?.data?.message || "Failed to get user's bookings",
       );
     }
-  }
+  },
 );
 
 // Admin (to update a booking status)
 export const updateBookingStatus = createAsyncThunk(
   "admin/bookings/updateBookingStatus",
-  async ({ bookingId, bookingStatus }, { rejectWithValue }) => {
+  async ({ bookingId, status, title, message }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.patch(
         `/admin/bookings/${bookingId}`,
         {
-          bookingStatus,
-        }
+          status,
+          title,
+          message,
+        },
       );
       return {
         booking: response.data.booking,
         message: response.data.message,
-        notificaiton: response.data.notification,
+        notification: response.data.notification,
       };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update booking status"
+        error.response?.data?.message || "Failed to update booking status",
       );
     }
-  }
+  },
 );
 
 // // // // Must be reviewed
@@ -171,15 +173,17 @@ export const deleteBooking = createAsyncThunk(
   async (bookingId, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.delete(
-        `/admin/bookings/${bookingId}`
+        `/admin/bookings/${bookingId}`,
       );
-      return { message: response.data.message };
+      return {
+        message: response.data.message || "Booking deleted successfully",
+      };
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete booking"
+        error.response?.data?.message || "Failed to delete booking",
       );
     }
-  }
+  },
 );
 
 const bookingSlice = createSlice({
@@ -214,7 +218,7 @@ const bookingSlice = createSlice({
     // Helper function to find and update a booking in the array
     const updateBookingInArray = (state, updatedBooking) => {
       const index = state.bookings.findIndex(
-        (booking) => booking._id === updatedBooking._id
+        (booking) => booking._id === updatedBooking._id,
       );
       if (index !== -1) {
         state.bookings[index] = updatedBooking;

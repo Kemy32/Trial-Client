@@ -47,7 +47,7 @@ export default function MenuSection() {
 
   return (
     <>
-      <section className="py-20">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-serif text-dark-gray text-center mb-16">
             Browse Our Menu

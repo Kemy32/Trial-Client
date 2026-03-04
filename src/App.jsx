@@ -21,8 +21,12 @@ import Login from "./pages/auth/Login.jsx";
 import Register from "./pages//auth/Register.jsx";
 import VerifyOtp from "./pages//auth/VerifyOtp.jsx";
 
-import AdminPanel from "./pages/admin/AdminPanel.jsx";
-import AdminProfile from "./components/sections/admin/AdminProfile.jsx";
+import AdminProfile from "./pages/admin/AdminProfile.jsx";
+import AdminUsers from "./pages/admin/Users.jsx";
+import AdminBookings from "./pages/admin/Bookings.jsx";
+import AdminMenu from "./pages/admin/Menu.jsx";
+import AdminBlogsArticles from "./pages/admin/BlogsArticles.jsx";
+import AdminMessages from "./pages/admin/ContactMessages.jsx";
 
 import Booking from "./pages/service/Booking.jsx";
 import UserProfile from "./pages/user/UserProfile.jsx";
@@ -86,17 +90,11 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route element={<DashboardLayout />}>
             <Route path="/admin/my-profile" element={<AdminProfile />}></Route>
-            <Route path="/admin/users" element={<h1>Users List</h1>}></Route>
-            <Route path="/admin/bookings" element={<h1>Bookings List</h1>} />
-            <Route
-              path="/admin/menu"
-              element={<h1>Menu Items List</h1>}
-            ></Route>
-            <Route
-              path="/admin/blogs"
-              element={<h1>Blogs and Articles</h1>}
-            ></Route>
-            <Route path="/admin/contacts" element={<h1>Messages</h1>}></Route>
+            <Route path="/admin/users" element={<AdminUsers />}></Route>
+            <Route path="/admin/bookings" element={<AdminBookings />} />
+            <Route path="/admin/menu" element={<AdminMenu />}></Route>
+            <Route path="/admin/blogs" element={<AdminBlogsArticles />}></Route>
+            <Route path="/admin/contacts" element={<AdminMessages />}></Route>
           </Route>
         </Route>
 

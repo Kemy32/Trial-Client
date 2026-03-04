@@ -5,7 +5,7 @@ import { Phone, Mail, MapPin } from "lucide-react";
 export default function AboutUsSection() {
   return (
     <>
-      <section className="bg-light-coffee pt-20 pb-40">
+      <section className="bg-light-coffee py-20">
         <div
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 
                       grid grid-cols-1 lg:grid-cols-2 gap-50 items-center"

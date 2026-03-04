@@ -1,0 +1,24 @@
+User Profile page
+Functionality (User):Edit user profile 
+Functionality (User):View bookings (cancel pending bookings)
+
+
+Admin Dashboard page
+Functionality (Admin): Edit Menu items   
+Functionality (Admin): Edit Blogs 
+
+
+Admin Profile: Data to show and edit.
+- Full Name (show & edit)
+- Email (show & edit)
+- Phone (show & edit)
+- Password (edit only,  because if we show the password, it would appear as hashed password and we can't retain the password's original form before hashing. so editing is the only resonable option for the password)
+
+
+
+Future updates
+- Remove password selection when finding, updating or whatever. e.g. User.find().select("-password") 
+- Check the responstivity. (Make the AI reconstruct the CSS)
+- Fix navigation problem. When scrolling and then press a Link to a new page, the point of view is not at the begin instead at the position which was before at the moment the link was pressed.
+Solution: When navigating, we have to reset the position to be at the top.
+

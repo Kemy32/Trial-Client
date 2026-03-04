@@ -4,6 +4,7 @@ import { MenuItemCard } from "../../ui/Card";
 import {
   filterMenuItems,
   getAllMenuItems,
+  resetMenuState,
   clearMessage,
   clearError,
 } from "../../../redux/slices/menuSlice";
@@ -16,6 +17,8 @@ export default function MenuSection() {
     useSelector((state) => state.menu);
 
   useEffect(() => {
+    dispatch(resetMenuState());
+
     dispatch(getAllMenuItems());
   }, [dispatch]);
 
@@ -25,7 +28,6 @@ export default function MenuSection() {
         position: "top-center",
         autoClose: 5000,
       });
-      // Clear error after showing
       dispatch(clearError());
     }
 
@@ -34,12 +36,10 @@ export default function MenuSection() {
         position: "top-center",
         autoClose: 3000,
       });
-      // Clear message after showing
       dispatch(clearMessage());
     }
   }, [error, message, dispatch]);
 
-  // Clean up on unmount
   useEffect(() => {
     return () => {
       dispatch(clearError());
@@ -60,27 +60,28 @@ export default function MenuSection() {
   ];
 
   return (
-    <section className="py-12 bg-light-coffee">
-      <div className="flex flex-col items-center text-center mb-10 px-4">
-        <h1 className="font-heading text-7xl text-black mb-6">Our Menu</h1>
-        <p className="max-w-xl text-gray-500 text-sm leading-relaxed">
+    <section className="py-20 bg-white">
+      <div className="max-w-3xl mx-auto text-center mb-12 px-4">
+        <h1 className="font-heading text-5xl md:text-7xl text-black mb-6">
+          Our Menu
+        </h1>
+        <p className="text-gray-500 text-sm md:text-base leading-relaxed">
           Delicious food, thoughtfully prepared and beautifully served. Browse
-          our categories to find your next favorite meal, made with passion and
-          the finest seasonal ingredients.
+          our categories to find your next favorite meal.
         </p>
       </div>
-      {/* 2. Filter Buttons Wrapper */}
-      <div className="flex flex-wrap justify-center gap-3 mb-16">
+
+      <div className="flex flex-wrap justify-center gap-3 mb-16 px-4">
         {filters.map((item) => {
           const isActive = selectedCategory === item.category;
           return (
             <button
               key={item.category}
               onClick={() => handleFilterClick(item.category)}
-              className={`px-8 py-2 flex items-center gap-2 rounded-full border transition-all font-semibold ${
+              className={`px-6 py-2 md:px-8 flex items-center gap-2 rounded-full border transition-all font-semibold text-sm md:text-base ${
                 isActive
                   ? "bg-crimson border-crimson text-white shadow-md"
-                  : "bg-white border-gray-300 text-dark-gray hover:bg-light-coffee"
+                  : "bg-white border-gray-200 text-dark-gray hover:bg-light-coffee"
               }`}
             >
               <item.icon size={18} />
@@ -90,27 +91,32 @@ export default function MenuSection() {
         })}
       </div>
 
-      {/* 3. Grid Container for Cards */}
-      <div className="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-6">
         {isLoading ? (
-          <p className="col-span-full text-center py-10">
-            Loading our delicious menu...
-          </p>
+          <div className="flex justify-center py-20">
+            <p className="animate-pulse text-gray-400">
+              Loading our delicious menu...
+            </p>
+          </div>
         ) : filteredItems && filteredItems.length > 0 ? (
-          filteredItems.map((item) => (
-            <MenuItemCard
-              key={item._id}
-              imgLink={item.image}
-              title={item.title}
-              category={item.category}
-              price={`$ ${item.price}`}
-              description={item.description}
-            />
-          ))
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 items-stretch">
+            {filteredItems.map((item) => (
+              <MenuItemCard
+                key={item._id}
+                imgLink={item.image}
+                title={item.title}
+                category={item.category}
+                price={`$${item.price}`}
+                description={item.description}
+              />
+            ))}
+          </div>
         ) : (
-          <p className="col-span-full text-center py-10">
-            No items found in this category.
-          </p>
+          <div className="text-center py-20 bg-light-coffee rounded-2xl border-2 border-dashed border-coffee">
+            <p className="text-gray-400 italic">
+              No items found in this category.
+            </p>
+          </div>
         )}
       </div>
     </section>
