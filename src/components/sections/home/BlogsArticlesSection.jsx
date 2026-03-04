@@ -46,7 +46,7 @@ export default function BlogsArticlesSection() {
     dispatch(getAllBlogsArticles());
   }, [dispatch]);
 
-  const displayedBlogsArticles = blogsArticles.slice(0.5);
+  const displayedBlogsArticles = blogsArticles?.slice(0.5) || [];
 
   return (
     <section className="py-20 bg-[#F9F9F7]">
