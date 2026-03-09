@@ -81,6 +81,21 @@ export const cancelBooking = createAsyncThunk(
   },
 );
 
+// User (to delete his own cancelled booking)
+export const deleteUserBooking = createAsyncThunk(
+  "bookings/deleteUserBooking",
+  async (bookingId, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.delete(`/bookings/${bookingId}`);
+      return { bookingId, message: response.data.message };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to delete booking",
+      );
+    }
+  },
+);
+
 // Admin (to get all bookings)
 export const getAllUsersBookings = createAsyncThunk(
   "admin/bookings/fetchBookings",
@@ -215,7 +230,6 @@ const bookingSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Helper function to find and update a booking in the array
     const updateBookingInArray = (state, updatedBooking) => {
       const index = state.bookings.findIndex(
         (booking) => booking._id === updatedBooking._id,
@@ -229,14 +243,12 @@ const bookingSlice = createSlice({
       }
     };
 
-    // Helper function for consistent handling of pending state
     const handlePending = (state) => {
       state.isLoading = true;
       state.error = null;
       state.message = null;
     };
 
-    // Helper function for consistent handling of rejected state
     const handleRejected = (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
@@ -279,6 +291,18 @@ const bookingSlice = createSlice({
         state.message = action.payload.message;
       })
       .addCase(cancelBooking.rejected, handleRejected)
+
+      // // // // // // User: Delete Cancelled Booking // // // // // //
+
+      .addCase(deleteUserBooking.pending, handlePending)
+      .addCase(deleteUserBooking.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.bookings = state.bookings.filter(
+          (b) => b._id !== action.payload.bookingId,
+        );
+        state.message = action.payload.message;
+      })
+      .addCase(deleteUserBooking.rejected, handleRejected)
 
       // // // // // // Admin: Get All Bookings // // // // // //
       .addCase(getAllUsersBookings.pending, handlePending)

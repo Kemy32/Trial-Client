@@ -30,17 +30,19 @@ export const updateAdminProfile = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const formData = new FormData();
-      if (userData.name) formData.append("name", userData.name);
-      if (userData.email) formData.append("email", userData.email);
-      if (userData.phone) formData.append("phone", userData.phone);
-      if (userData.password) formData.append("password", userData.password);
+      // All keys (name, email, phone, password, profile_image)
+      Object.keys(userData).forEach((key) => {
+        if (userData[key] !== undefined && userData[key] !== null) {
+          formData.append(key, userData[key]);
+        }
+      });
 
-      const response = await axiosInstance.put("/admin/profile", formData, {
+      const response = await axiosInstance.patch("/admin/profile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       return {
-        user: response.data.updatedUser,
+        user: response.data.user,
         message: "Admin profile updated successfully",
       };
     } catch (error) {
@@ -87,7 +89,7 @@ export const getUserProfile = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/user/profile");
-      return response.data; // Assuming this returns the user object directly
+      return response.data.user;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to fetch profile",
@@ -102,20 +104,28 @@ export const updateUserProfile = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const formData = new FormData();
-      if (userData.name) formData.append("name", userData.name);
-      if (userData.email) formData.append("email", userData.email);
-      if (userData.phone) formData.append("phone", userData.phone);
-      if (userData.password) formData.append("password", userData.password);
-      if (userData.profile_image) {
-        formData.append("profile_image", userData.profile_image);
-      }
 
-      const response = await axiosInstance.put("/user/profile", formData, {
+      // All keys (name, email, phone, password, profile_image)
+      Object.keys(userData).forEach((key) => {
+        if (userData[key] !== undefined && userData[key] !== null) {
+          formData.append(key, userData[key]);
+        }
+      });
+
+      // if (userData.name) formData.append("name", userData.name);
+      // if (userData.email) formData.append("email", userData.email);
+      // if (userData.phone) formData.append("phone", userData.phone);
+      // if (userData.password) formData.append("password", userData.password);
+      // if (userData.profile_image) {
+      //   formData.append("profile_image", userData.profile_image);
+      // }
+
+      const response = await axiosInstance.patch("/user/profile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       return {
-        user: response.data,
+        user: response.data.user,
         message: "Profile updated successfully",
       };
     } catch (error) {
@@ -206,7 +216,7 @@ const userSlice = createSlice({
       .addCase(getUserProfile.pending, handlePending)
       .addCase(getUserProfile.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentUser = action.payload;
+        state.currentUser = action.payload.user;
       })
       .addCase(getUserProfile.rejected, handleRejected)
 

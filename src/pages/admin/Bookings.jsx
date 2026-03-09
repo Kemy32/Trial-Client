@@ -8,7 +8,7 @@ import {
   deleteBooking,
   clearMessage,
   clearError,
-} from "../../redux/slices/bookingSlice";
+} from "../../redux/slices/bookingSlice.js";
 import { toast } from "react-toastify";
 
 export default function BookingsSection() {
@@ -112,7 +112,6 @@ export default function BookingsSection() {
 
                   return (
                     <tr key={booking._id} className="group">
-                      {/* Guest Info */}
                       <td className="bg-light-coffee p-4 rounded-l-2xl border-y border-l border-transparent group-hover:border-crimson/20 transition-all">
                         <div className="flex items-center gap-3">
                           <div className="bg-white p-2 rounded-full text-crimson shadow-sm">
@@ -129,7 +128,6 @@ export default function BookingsSection() {
                         </div>
                       </td>
 
-                      {/* Schedule */}
                       <td className="bg-light-coffee p-4 border-y border-transparent group-hover:border-crimson/20 transition-all">
                         <div className="flex flex-col gap-1">
                           <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -143,7 +141,6 @@ export default function BookingsSection() {
                         </div>
                       </td>
 
-                      {/* Actions */}
                       <td className="bg-light-coffee p-4 border-y border-transparent group-hover:border-crimson/20 transition-all">
                         <div className="flex items-center justify-center gap-3">
                           <button
@@ -186,14 +183,13 @@ export default function BookingsSection() {
                         </div>
                       </td>
 
-                      {/* Status Column */}
                       <td className="bg-light-coffee p-4 rounded-r-2xl text-center border-y border-r border-transparent group-hover:border-crimson/20 transition-all">
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm ${
                             booking.status === "approved"
                               ? "bg-green-100 text-green-600"
                               : booking.status === "rejected" ||
-                                  booking.status === "canceled"
+                                  booking.status === "cancelled"
                                 ? "bg-red-100 text-red-600"
                                 : "bg-white text-gray-500"
                           }`}

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { updateUserProfile, updateAdminProfile } from "./userSlice";
 import axiosInstance from "../../api/axiosInstance";
 
 const initialState = {
@@ -19,16 +20,13 @@ const initialState = {
   message: null,
   loggedOutMessage: null,
 };
-
 // User (to check if authenticated on app load)
 export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/auth/current-user");
-      return {
-        user: response.data.user,
-      };
+      return { user: response.data.user };
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Not authenticated",
@@ -46,7 +44,6 @@ export const login = createAsyncThunk(
         email,
         password,
       });
-
       return {
         user: response.data.user,
         message: response.data.message,
@@ -57,10 +54,7 @@ export const login = createAsyncThunk(
       const errorMessage = error.response?.data?.message || "Login failed";
 
       if (!isVerified && isCredentialValid) {
-        return rejectWithValue({
-          message: errorMessage,
-          email: email,
-        });
+        return rejectWithValue({ message: errorMessage, email: email });
       }
       return rejectWithValue(errorMessage);
     }
@@ -72,7 +66,6 @@ export const register = createAsyncThunk(
   "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
-      // Create FormData for file upload
       const formData = new FormData();
       formData.append("name", userData.name);
       formData.append("email", userData.email);
@@ -84,9 +77,7 @@ export const register = createAsyncThunk(
       }
 
       const response = await axiosInstance.post("/auth/register", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       });
       return {
         user: response.data.user,
@@ -111,7 +102,6 @@ export const verifyOtp = createAsyncThunk(
       });
       return {
         message: response.data.message,
-        // For reference
         user: response.data.user,
         token: response.data.token,
       };
@@ -128,9 +118,7 @@ export const resendOtp = createAsyncThunk(
   "auth/resend-otp",
   async (email, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/auth/resend-otp", {
-        email,
-      });
+      const response = await axiosInstance.post("/auth/resend-otp", { email });
       return response.data.message;
     } catch (error) {
       return rejectWithValue(
@@ -151,7 +139,7 @@ export const logout = createAsyncThunk(
         isLoggedOut: response.data.isLoggedOut,
       };
     } catch (error) {
-      return rejectWithValue(error.repsonse?.data?.message || "Logout failed");
+      return rejectWithValue(error.response?.data?.message || "Logout failed");
     }
   },
 );
@@ -167,17 +155,8 @@ const authSlice = createSlice({
       state.message = null;
       state.loggedOutMessage = null;
     },
-
     resetAuth: (state) => {
-      state.user = null;
-      state.isAuthenticated = false;
-      state.isLoggedOut = true;
-      state.isLoading = false;
-      state.error = null;
-      state.pendingVerification = false;
-      state.pendingEmail = null;
-      state.isVerified = false;
-      state.message = null;
+      Object.assign(state, initialState);
     },
   },
   extraReducers: (builder) => {
@@ -194,7 +173,7 @@ const authSlice = createSlice({
     };
 
     builder
-      // // // // // // Check Auth (on app load) // // // // // //
+      // Check Auth
       .addCase(checkAuth.pending, handlePending)
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -208,7 +187,7 @@ const authSlice = createSlice({
         state.isLoggedOut = true;
         state.user = null;
       })
-      // // // // // // Login // // // // // //
+      // Login
       .addCase(login.pending, handlePending)
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -220,7 +199,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
-        if (!action.payload.isVerified && action.payload.email) {
+        if (action.payload?.email) {
           state.pendingVerification = true;
           state.pendingEmail = action.payload.email;
           state.error = action.payload.message;
@@ -228,7 +207,7 @@ const authSlice = createSlice({
           state.error = action.payload;
         }
       })
-      // // // // // // Register // // // // // //
+      // Register
       .addCase(register.pending, handlePending)
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -237,7 +216,7 @@ const authSlice = createSlice({
         state.message = action.payload.message;
       })
       .addCase(register.rejected, handleRejected)
-      // // // // // // Verify otp // // // // // //
+      // Verify OTP
       .addCase(verifyOtp.pending, handlePending)
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -250,29 +229,20 @@ const authSlice = createSlice({
         state.isVerified = true;
       })
       .addCase(verifyOtp.rejected, handleRejected)
-      // // // // // // Resend otp // // // // // //
-      .addCase(resendOtp.pending, handlePending)
-      .addCase(resendOtp.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.message = action.payload;
-      })
-      .addCase(resendOtp.rejected, handleRejected)
-
-      // // // // // // Logout // // // // // //
-      .addCase(logout.pending, handlePending)
+      // Logout
       .addCase(logout.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isAuthenticated = false;
-        state.isLoggedOut = true;
-        state.error = null;
-        state.user = null;
-        state.pendingVerification = false;
-        state.pendingEmail = null;
-        state.isVerified = false;
-        state.message = null;
+        Object.assign(state, initialState);
         state.loggedOutMessage = "Logged out successfully";
       })
-      .addCase(logout.rejected, handleRejected);
+
+      // // // // // // PROFILE UPDATE INTEGRATION // // // // // //
+      // This is the key part that updates the UI instantly
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+      })
+      .addCase(updateAdminProfile.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+      });
   },
 });
 

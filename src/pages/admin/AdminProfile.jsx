@@ -3,7 +3,7 @@ import { User, Mail, Phone, Edit3, Save, X, Lock } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../components/ui/LoadingSpinner.jsx";
-import EditItem from "../../components/forms/EditUserForm.jsx";
+import EditField from "../../components/forms/EditProfileForm.jsx";
 import {
   updateAdminProfile,
   clearError,
@@ -68,7 +68,6 @@ export default function AdminProfile() {
 
   return (
     <div className="max-w-5xl mx-auto mb-16 p-8 bg-white rounded-lg shadow-md border border-light-coffee">
-      {/* Header - Styled like UsersSection */}
       <div className="flex justify-between items-center border-b border-light-coffee pb-4 mb-8">
         <h1 className="text-2xl font-bold text-crimson">Admin Information</h1>
         {!isEditing ? (
@@ -99,15 +98,15 @@ export default function AdminProfile() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-        <EditItem
-          label="User name"
+        <EditField
+          label="Full name"
           name="name"
           value={formData.name}
           icon={<User size={18} />}
           isEditing={isEditing}
           onChange={handleChange}
         />
-        <EditItem
+        <EditField
           label="Email Address"
           name="email"
           value={formData.email}
@@ -116,7 +115,7 @@ export default function AdminProfile() {
           onChange={handleChange}
           type="email"
         />
-        <EditItem
+        <EditField
           label="Phone Number"
           name="phone"
           value={formData.phone}
@@ -124,7 +123,7 @@ export default function AdminProfile() {
           isEditing={isEditing}
           onChange={handleChange}
         />
-        <EditItem
+        <EditField
           label="Password"
           name="password"
           value={formData.password}

@@ -12,7 +12,6 @@ import { toast } from "react-toastify";
 export default function BlogsArticlesSection() {
   const dispatch = useDispatch();
   const { error, message, isLoading, blogsArticles } = useSelector((state) => {
-    console.log(state, "Test");
     return state.blog;
   });
 
@@ -46,7 +45,7 @@ export default function BlogsArticlesSection() {
     dispatch(getAllBlogsArticles());
   }, [dispatch]);
 
-  const displayedBlogsArticles = blogsArticles?.slice(0.5) || [];
+  const displayedBlogsArticles = blogsArticles?.slice(0.5);
 
   return (
     <section className="py-20 bg-[#F9F9F7]">
