@@ -5,6 +5,7 @@ import axiosInstance from "../../api/axiosInstance";
 const initialState = {
   user: null,
   isAuthenticated: false,
+  isInitialized: false,
   isLoggedOut: true,
   isLoading: false,
 
@@ -178,12 +179,14 @@ const authSlice = createSlice({
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
+        state.isInitialized = true;
         state.isLoggedOut = false;
         state.user = action.payload.user;
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isLoading = false;
         state.isAuthenticated = false;
+        state.isInitialized = true;
         state.isLoggedOut = true;
         state.user = null;
       })
@@ -221,6 +224,7 @@ const authSlice = createSlice({
       .addCase(verifyOtp.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
+        state.isInitialized = true;
         state.isLoggedOut = false;
         state.user = action.payload.user;
         state.pendingVerification = false;
