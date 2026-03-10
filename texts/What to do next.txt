@@ -1,19 +1,6 @@
-User Profile page
-Functionality (User):Edit user profile 
-Functionality (User):View bookings (cancel pending bookings)
-
-
 Admin Dashboard page
-Functionality (Admin): Edit Menu items   
-Functionality (Admin): Edit Blogs 
-
-
-Admin Profile: Data to show and edit.
-- Full Name (show & edit)
-- Email (show & edit)
-- Phone (show & edit)
-- Password (edit only,  because if we show the password, it would appear as hashed password and we can't retain the password's original form before hashing. so editing is the only resonable option for the password)
-
+Functionality (Admin): Add Menu items   
+Functionality (Admin): Add Blogs 
 
 
 Future updates

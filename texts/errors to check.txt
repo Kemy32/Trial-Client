@@ -1,2 +1,0 @@
-* Adjust responsivity in all pages
-* Check image upload
