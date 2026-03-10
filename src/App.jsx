@@ -37,6 +37,7 @@ import NotFound from "./pages/errors/NotFound.jsx";
 import Logout from "./pages/auth/Logout.jsx";
 import Navbar from "./components/layout/Navbar.jsx";
 import DashboardLayout from "./components/layout/DashboardLayout.jsx";
+import ScrollToTop from "./components/layout/ScrollToTop.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ function App() {
       />
       <HeaderBar />
       <Navbar />
+      <ScrollToTop />
 
       <Routes>
         {/* Home */}
