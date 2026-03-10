@@ -10,13 +10,15 @@ export default function DashboardLayout() {
     isAuthenticated && (role === "admin" || role === "user");
 
   return (
-    <div className="flex min-h-screen bg-light-coffee">
-      {shouldRenderSidebar && <SideNavbar />}
+    <div className="min-h-screen bg-light-coffee pb-10">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 flex flex-col lg:flex-row gap-8">
+        {shouldRenderSidebar && <SideNavbar />}
 
-      <main className="mt-10">
-        {/* Outlet renders the specific child route component (e.g., UserProfile, Bookings List) */}
-        <Outlet />
-      </main>
+        <main className="flex-1 w-full min-w-0">
+          {/* Outlet renders the specific child route component (e.g., UserProfile, Bookings List) */}
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

@@ -72,7 +72,7 @@ export function ServiceCard(props) {
 
 export function TestimonialCard(props) {
   return (
-    <div className="bg-light-coffee px-7 py-8 rounded-lg text-left max-w-xs min-w-[280px]">
+    <div className="bg-light-coffee px-6 py-8 md:px-7 md:py-10 rounded-2xl text-left w-full max-w-sm h-full flex flex-col justify-between">
       <div className="mb-6 pb-5 border-b border-grayish">
         <h1 className="text-xl whitespace-nowrap font-bold text-crimson mb-3">
           {props.heading}
@@ -114,11 +114,10 @@ export function BlogArticleCard(props) {
     >
       {/* Aspect Ratio Container for Image */}
       <div
-        className={`relative w-full overflow-hidden ${
-          props.size === "big"
+        className={`relative w-full overflow-hidden ${props.size === "big"
             ? "aspect-[4/3] md:aspect-auto md:h-full"
             : "aspect-[16/10]"
-        }`}
+          }`}
       >
         <img
           src={props.imgLink}
@@ -138,7 +137,7 @@ export function BlogArticleCard(props) {
         </h3>
 
         {props.size === "big" && (
-          <p className="text-gray-600 text-sm leading-relaxed line-clamp-4">
+          <p className="text-gray-600 text-sm md:text-base leading-relaxed line-clamp-3 md:line-clamp-4">
             {props.description}
           </p>
         )}
