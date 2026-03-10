@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import EditMenu from "../../components/forms/EditMenuFrom.jsx";
@@ -12,12 +12,15 @@ import {
   DollarSign,
   Save,
   X,
+  Plus,
+  ImagePlus,
 } from "lucide-react";
 import LoadingSpinner from "../../components/ui/LoadingSpinner.jsx";
 import {
   getAllMenuItems,
   deleteMenuItem,
   updateMenuItem,
+  createMenuItem,
   clearError,
   clearMessage,
 } from "../../redux/slices/menuSlice";
@@ -55,6 +58,16 @@ const ExpandableDescription = ({ text }) => {
   );
 };
 
+const CATEGORIES = ["breakfast", "main dish", "dessert", "drink"];
+
+const emptyCreateForm = {
+  title: "",
+  price: "",
+  category: "",
+  description: "",
+  image: null,
+};
+
 export default function MenuItemsSection() {
   const dispatch = useDispatch();
   const { menuItems, isLoading, error, message } = useSelector(
@@ -69,6 +82,44 @@ export default function MenuItemsSection() {
     category: "",
     description: "",
   });
+
+  // Create-item drawer state
+  const [showCreateDrawer, setShowCreateDrawer] = useState(false);
+  const [createFormData, setCreateFormData] = useState(emptyCreateForm);
+  const [imagePreview, setImagePreview] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleCreateChange = (e) => {
+    setCreateFormData({ ...createFormData, [e.target.name]: e.target.value });
+  };
+
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCreateFormData({ ...createFormData, image: file });
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleCreateSubmit = (e) => {
+    e.preventDefault();
+    if (!createFormData.title || !createFormData.price || !createFormData.category || !createFormData.description) {
+      toast.error("Please fill in all required fields.", {
+        toastId: "create-validation",
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
+      });
+      return;
+    }
+    dispatch(createMenuItem(createFormData));
+  };
+
+  const closeCreateDrawer = () => {
+    setShowCreateDrawer(false);
+    setCreateFormData(emptyCreateForm);
+    setImagePreview(null);
+  };
 
   useEffect(() => {
     dispatch(getAllMenuItems());
@@ -90,7 +141,8 @@ export default function MenuItemsSection() {
         autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE),
       });
       dispatch(clearMessage());
-      setEditingId(null); // Exit edit mode on success
+      setEditingId(null);
+      closeCreateDrawer(); // Close drawer after successful create
     }
   }, [error, message, dispatch]);
 
@@ -119,21 +171,172 @@ export default function MenuItemsSection() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto mb-16 p-8 bg-white rounded-lg shadow-md border border-light-coffee">
-      <div className="flex justify-between items-center border-b border-light-coffee pb-4 mb-6">
-        <h1 className="text-2xl font-bold text-crimson">Menu Management</h1>
-        <span className="bg-light-coffee px-4 py-1 rounded-full text-crimson font-semibold text-sm">
-          Total Items: {menuItems?.length || 0}
-        </span>
+    <div className="max-w-5xl mx-auto mb-16 p-4 md:p-8 bg-white rounded-lg shadow-md border border-light-coffee">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-light-coffee pb-4 mb-6">
+        <h1 className="text-xl md:text-2xl font-bold text-crimson italic font-heading">
+          Menu Management
+        </h1>
+        <div className="flex items-center gap-3">
+          <span className="bg-light-coffee px-4 py-1 rounded-full text-crimson font-semibold text-sm">
+            Total Items: {menuItems?.length || 0}
+          </span>
+          <button
+            onClick={() => setShowCreateDrawer(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-crimson text-white rounded-full hover:bg-red-800 transition-all shadow-sm font-bold text-xs uppercase"
+          >
+            <Plus size={14} /> New Item
+          </button>
+        </div>
       </div>
+
+
+      {showCreateDrawer && (
+        <div className="fixed inset-0 z-50 flex">
+          <div
+            className="flex-1 bg-black/40 backdrop-blur-sm"
+            onClick={closeCreateDrawer}
+          />
+
+          <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col overflow-y-auto animate-slide-in">
+
+            <div className="flex items-center justify-between px-6 py-5 border-b border-light-coffee">
+              <div>
+                <h2 className="text-xl font-bold text-crimson">Add New Item</h2>
+                <p className="text-xs text-gray-400 mt-0.5">Fill in the details below</p>
+              </div>
+              <button
+                onClick={closeCreateDrawer}
+                className="p-2 rounded-full hover:bg-light-coffee transition-all text-gray-400 hover:text-crimson"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateSubmit} className="flex flex-col gap-5 p-6 flex-1">
+
+
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  Photo (optional)
+                </label>
+                <div
+                  className="w-full h-40 rounded-xl border-2 border-dashed border-crimson/20 hover:border-crimson/50 transition-all flex flex-col items-center justify-center cursor-pointer bg-light-coffee/40 overflow-hidden"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {imagePreview ? (
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <>
+                      <ImagePlus size={28} className="text-crimson/40 mb-2" />
+                      <span className="text-xs text-gray-400">Click to upload image</span>
+                    </>
+                  )}
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
+              </div>
+
+
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Title *</label>
+                <input
+                  name="title"
+                  value={createFormData.title}
+                  onChange={handleCreateChange}
+                  placeholder="e.g. Grilled Salmon"
+                  required
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-dark-gray focus:outline-none focus:border-crimson transition-all"
+                />
+              </div>
+
+
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Price ($) *</label>
+                <div className="flex items-center border border-gray-200 rounded-lg px-3 py-2 focus-within:border-crimson transition-all">
+                  <DollarSign size={14} className="text-crimson mr-1 shrink-0" />
+                  <input
+                    name="price"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={createFormData.price}
+                    onChange={handleCreateChange}
+                    placeholder="0.00"
+                    required
+                    className="w-full text-sm text-dark-gray focus:outline-none bg-transparent"
+                  />
+                </div>
+              </div>
+
+
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Category *</label>
+                <select
+                  name="category"
+                  value={createFormData.category}
+                  onChange={handleCreateChange}
+                  required
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-dark-gray focus:outline-none focus:border-crimson transition-all bg-white capitalize"
+                >
+                  <option value="" disabled>Select a category</option>
+                  {CATEGORIES.map((cateogries) => (
+                    <option key={cateogries} value={cateogries} className="capitalize">{cateogries}</option>
+                  ))}
+                </select>
+              </div>
+
+
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Description *</label>
+                <textarea
+                  name="description"
+                  value={createFormData.description}
+                  onChange={handleCreateChange}
+                  placeholder="Describe the dish... (Must be between 8-100 characters)"
+                  rows={4}
+                  required
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-dark-gray focus:outline-none focus:border-crimson transition-all resize-none"
+                />
+              </div>
+
+              {/* Submit */}
+              <div className="mt-auto pt-4 border-t border-light-coffee flex gap-3">
+                <button
+                  type="button"
+                  onClick={closeCreateDrawer}
+                  className="flex-1 py-2.5 rounded-full border border-gray-200 text-sm font-bold text-gray-500 hover:bg-gray-50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="flex-1 py-2.5 rounded-full bg-crimson text-white text-sm font-bold hover:bg-red-800 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isLoading ? (
+                    <><LoadingSpinner /> Creating...</>
+                  ) : (
+                    <><Plus size={14} /> Create Item</>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {isLoading && !editingId ? (
         <div className="flex justify-center py-10">
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="overflow-y-auto pr-2 max-h-[700px] custom-scrollbar">
-          <table className="w-full border-separate border-spacing-y-4">
+        <div className="overflow-x-auto overflow-y-auto pr-2 max-h-[700px] custom-scrollbar pb-4">
+          <table className="w-full min-w-[900px] border-separate border-spacing-y-4 text-left">
             <thead className="sticky top-0 bg-white z-10">
               <tr className="text-left text-gray-500 uppercase text-xs tracking-wider">
                 <th className="px-4 py-2 bg-white">Dish Details</th>
@@ -147,7 +350,7 @@ export default function MenuItemsSection() {
                   const isEditing = editingId === item._id;
                   return (
                     <tr key={item._id} className="group align-top">
-                      {/* Dish Details Cell */}
+
                       <td
                         className={`p-4 rounded-l-2xl border-y border-l transition-all w-1/3 ${isEditing ? "bg-white border-crimson/30 shadow-sm" : "bg-light-coffee border-transparent"}`}
                       >

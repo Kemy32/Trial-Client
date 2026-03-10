@@ -17,6 +17,8 @@ import {
   ChevronUp,
   ChevronDown,
   Utensils,
+  Menu,
+  X,
 } from "lucide-react";
 import BistroBlissLogo from "../../assets/images/bistro-bliss-logo.png";
 import { LinkBtn } from "../ui/Buttons";
@@ -24,6 +26,7 @@ import { LinkBtn } from "../ui/Buttons";
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotifcationsRinging, setIsNotifcationsRinging] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const role = useSelector((state) => state.auth.user?.role);
@@ -40,6 +43,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setIsDropdownOpen(false);
+    setIsMenuOpen(false);
   }, [location]);
 
   // Guest Navbar: Pages Links. Login & Register icons
@@ -66,11 +70,10 @@ export default function Navbar() {
   const UserNavbar = () => (
     <div className="flex items-center gap-4 relative">
       <button
-        className={`${
-          isNotifcationsRinging
-            ? "bg-crimson shadow-md"
-            : "bg-mid-gray hover:shadow-md"
-        } relative px-1.5 py-1.5  text-white rounded-full  hover:bg-crimson  transition-colors`}
+        className={`${isNotifcationsRinging
+          ? "bg-crimson shadow-md"
+          : "bg-mid-gray hover:shadow-md"
+          } relative px-1.5 py-1.5  text-white rounded-full  hover:bg-crimson  transition-colors`}
         onClick={() => setIsNotifcationsRinging(!isNotifcationsRinging)}
       >
         {isNotifcationsRinging ? (
@@ -85,9 +88,8 @@ export default function Navbar() {
       <div className="relative">
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className={`${
-            isDropdownOpen ? "bg-crimson" : "bg-mid-gray"
-          } flex items-center gap-2 px-1.5 py-1.5  text-white rounded-full  hover:bg-crimson hover:shadow-md transition-colors focus:outline-none`}
+          className={`${isDropdownOpen ? "bg-crimson" : "bg-mid-gray"
+            } flex items-center gap-2 px-1.5 py-1.5  text-white rounded-full  hover:bg-crimson hover:shadow-md transition-colors focus:outline-none`}
         >
           <User size={20} />
           {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -135,11 +137,10 @@ export default function Navbar() {
   const AdminNavbar = () => (
     <div className="flex items-center gap-4 relative">
       <button
-        className={`${
-          isNotifcationsRinging
-            ? "bg-crimson shadow-md"
-            : "bg-mid-gray hover:shadow-md"
-        } relative px-1.5 py-1.5  text-white rounded-full  hover:bg-crimson  transition-colors`}
+        className={`${isNotifcationsRinging
+          ? "bg-crimson shadow-md"
+          : "bg-mid-gray hover:shadow-md"
+          } relative px-1.5 py-1.5  text-white rounded-full  hover:bg-crimson  transition-colors`}
         onClick={() => setIsNotifcationsRinging(!isNotifcationsRinging)}
       >
         {isNotifcationsRinging ? (
@@ -154,9 +155,8 @@ export default function Navbar() {
       <div className="relative">
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className={`${
-            isDropdownOpen ? "bg-crimson" : "bg-mid-gray"
-          } flex items-center gap-2 px-1.5 py-1.5  text-white rounded-full  hover:bg-crimson hover:shadow-md transition-colors focus:outline-none`}
+          className={`${isDropdownOpen ? "bg-crimson" : "bg-mid-gray"
+            } flex items-center gap-2 px-1.5 py-1.5  text-white rounded-full  hover:bg-crimson hover:shadow-md transition-colors focus:outline-none`}
         >
           <ShieldUser size={20} />
           {isDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -244,10 +244,9 @@ export default function Navbar() {
             to={link.path}
             className={({ isActive }) =>
               `px-3 py-1.5 rounded-full  transition-colors 
-              ${
-                isActive
-                  ? "text-white bg-crimson shadow-md"
-                  : "text-dark-gray hover:bg-coffee hover:text-crimson"
+              ${isActive
+                ? "text-white bg-crimson shadow-md"
+                : "text-dark-gray hover:bg-coffee hover:text-crimson"
               }`
             }
           >
@@ -272,32 +271,36 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="w-full bg-light-coffee border-b border-light-coffee ">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <nav className="w-full bg-light-coffee border-b border-light-coffee sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <Link
               key={"homeKey"}
               to={"/"}
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 shrink-0"
             >
               <div className="w-auto h-auto rounded-full flex items-center justify-center">
                 <img
                   src={BistroBlissLogo}
-                  className="h-10 w-auto"
+                  className="h-8 md:h-10 w-auto"
                   alt="bistro bliss logo"
                 />
               </div>
-              <span className="text-4xl font-heading font-bold italic text-dark-gray">
+              <span className="text-2xl md:text-4xl font-heading font-bold italic text-dark-gray  xs:block">
                 Bistro Bliss
               </span>
             </Link>
 
-            <div className="hidden md:flex items-center space-x-2">
+            {/* Desktop Center Links */}
+            <div className="hidden lg:flex items-center space-x-2">
               {renderPagesLinks()}
             </div>
 
-            <div className="flex items-center gap-10">
-              <div>
+            {/* Right Side Actions */}
+            <div className="flex items-center gap-2 md:gap-4">
+              {/* Desktop Booking Btn */}
+              <div className="hidden sm:block">
                 <LinkBtn
                   btnKey={"booking"}
                   to={"/booking"}
@@ -306,10 +309,51 @@ export default function Navbar() {
                 />
               </div>
 
-              <div className="flex items-center gap-6">{renderNavbar()}</div>
+              {/* User/Admin Actions */}
+              <div className="flex items-center gap-3">{renderNavbar()}</div>
+
+              {/* Mobile Menu Toggle */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="lg:hidden p-2 text-dark-gray hover:text-crimson transition-all"
+              >
+                {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
             </div>
           </div>
         </div>
+
+        {/* Mobile Nav Links Overlay */}
+        {isMenuOpen && (
+          <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-light-coffee shadow-xl animate-slide-in-down z-40 overflow-hidden">
+            <div className="flex flex-col p-6 gap-4">
+              {pagesLinks.map((link) => (
+                <NavLink
+                  key={link.name}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-6 py-4 rounded-2xl text-lg font-bold transition-all ${isActive
+                      ? "bg-crimson text-white shadow-lg"
+                      : "bg-light-coffee text-dark-gray hover:bg-coffee hover:text-crimson"
+                    }`
+                  }
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.name}
+                </NavLink>
+              ))}
+              <div className="sm:hidden mt-4 pt-4 border-t border-light-coffee">
+                <Link
+                  to="/booking"
+                  className="block w-full text-center py-4 bg-crimson text-white rounded-2xl font-bold text-lg shadow-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Book A Table
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
     </>
   );

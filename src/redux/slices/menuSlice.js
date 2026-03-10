@@ -78,9 +78,18 @@ export const createMenuItem = createAsyncThunk(
   "admin/menu/createMenuItem",
   async (menuItemData, { rejectWithValue }) => {
     try {
+      const formData = new FormData();
+      formData.append("title", menuItemData.title);
+      formData.append("description", menuItemData.description);
+      formData.append("price", menuItemData.price);
+      formData.append("category", menuItemData.category);
+      if (menuItemData.image) {
+        formData.append("image", menuItemData.image);
+      }
       const response = await axiosInstance.post(
         "/admin/menu/item",
-        menuItemData,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } },
       );
       return {
         menuItem: response.data.menuItem,
@@ -128,6 +137,7 @@ export const deleteMenuItem = createAsyncThunk(
     try {
       const response = await axiosInstance.delete(`/admin/menu/items/${id}`);
       return {
+        id,
         message: response.data.message,
       };
     } catch (error) {
@@ -261,7 +271,7 @@ const menuSlice = createSlice({
       .addCase(deleteMenuItem.fulfilled, (state, action) => {
         state.isLoading = false;
         // Delete item from both lists
-        const deletedId = action.payload;
+        const deletedId = action.payload.id;
 
         state.menuItems = state.menuItems.filter(
           (item) => item._id !== deletedId,

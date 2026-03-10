@@ -8,17 +8,17 @@ export default function MainSection() {
       <section className="bg-light-coffee pt-20 pb-40">
         <div
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 
-                      grid grid-cols-1 lg:grid-cols-2 gap-50 items-center"
+                      grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-32 items-center"
         >
           <div className="relative">
             <img
               src={MeatMealImg}
-              className="w-full h-96 lg:h-[500px] object-cover object-center rounded-lg shadow-lg"
-              alt="About us image 1 (Home section)"
+              className="w-full h-80 md:h-96 lg:h-[500px] object-cover object-center rounded-lg shadow-lg"
+              alt="About us main image"
             />
             <div
-              className="absolute -bottom-10 -right-4 md:-right-10 w-11/12 md:w-3/4 lg:w-[350px] 
-                          bg-dark-gray text-white p-10 rounded-lg shadow-2xl"
+              className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-[90%] md:w-3/4 lg:w-[350px] lg:left-auto lg:translate-x-0 lg:-right-10 
+                          bg-dark-gray text-white p-8 md:p-10 rounded-lg shadow-2xl z-10"
             >
               <h1 className="text-xl font-semibold mb-8">Come visit us</h1>
               <div className="space-y-3 text-sm text-white">

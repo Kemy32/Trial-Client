@@ -18,8 +18,8 @@ export default function BlogsArticlesSection() {
   useEffect(() => {
     if (error) {
       toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
       });
       dispatch(clearError());
     }
@@ -45,15 +45,15 @@ export default function BlogsArticlesSection() {
     dispatch(getAllBlogsArticles());
   }, [dispatch]);
 
-  const displayedBlogsArticles = blogsArticles?.slice(0.5);
+  const displayedBlogsArticles = blogsArticles?.slice(0, 5) || [];
 
   return (
     <section className="py-20 bg-[#F9F9F7]">
       {" "}
       {/* light-coffee color */}
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-col sm:flex-row justify-between items-end mb-12 gap-4">
-          <h1 className="text-4xl md:text-6xl font-heading text-dark-gray">
+        <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end mb-12 gap-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading text-dark-gray text-center sm:text-left">
             Our Blogs & Articles
           </h1>
           <LinkBtn

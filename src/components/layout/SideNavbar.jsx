@@ -48,22 +48,20 @@ export default function SideNavbar() {
                     <>
                       <span
                         className={`rounded-full p-2 transition-colors 
-              ${
-                isActive
-                  ? "bg-crimson text-white"
-                  : "bg-light-coffee text-dark-gray group-hover:bg-coffee group-hover:text-crimson"
-              }`}
+              ${isActive
+                            ? "bg-crimson text-white"
+                            : "bg-light-coffee text-dark-gray group-hover:bg-coffee group-hover:text-crimson"
+                          }`}
                       >
                         <link.icon size={20} />
                       </span>
 
                       <span
                         className={`w-full rounded-xl p-2 transition-colors 
-              ${
-                isActive
-                  ? "bg-crimson text-white"
-                  : "bg-light-coffee text-dark-gray group-hover:bg-coffee group-hover:text-crimson"
-              }`}
+              ${isActive
+                            ? "bg-crimson text-white"
+                            : "bg-light-coffee text-dark-gray group-hover:bg-coffee group-hover:text-crimson"
+                          }`}
                       >
                         {link.name}
                       </span>
@@ -91,22 +89,20 @@ export default function SideNavbar() {
                     <>
                       <span
                         className={`rounded-full p-2 transition-colors 
-              ${
-                isActive
-                  ? "bg-crimson text-white"
-                  : "bg-light-coffee text-dark-gray group-hover:bg-coffee group-hover:text-crimson"
-              }`}
+              ${isActive
+                            ? "bg-crimson text-white"
+                            : "bg-light-coffee text-dark-gray group-hover:bg-coffee group-hover:text-crimson"
+                          }`}
                       >
                         <link.icon size={20} />
                       </span>
 
                       <span
                         className={`w-full rounded-xl p-2 transition-colors 
-              ${
-                isActive
-                  ? "bg-crimson text-white"
-                  : "bg-light-coffee text-dark-gray group-hover:bg-coffee group-hover:text-crimson"
-              }`}
+              ${isActive
+                            ? "bg-crimson text-white"
+                            : "bg-light-coffee text-dark-gray group-hover:bg-coffee group-hover:text-crimson"
+                          }`}
                       >
                         {link.name}
                       </span>
@@ -122,7 +118,7 @@ export default function SideNavbar() {
   };
 
   return (
-    <div className="w-64 h-fit bg-white text-crimson p-4 rounded-xl shadow-md mt-10 ml-33 mr-10">
+    <div className="hidden lg:block w-64 h-fit bg-white text-crimson p-4 rounded-xl shadow-md sticky top-24">
       <nav className="flex flex-col items-center">{renderNavbar()}</nav>
     </div>
   );

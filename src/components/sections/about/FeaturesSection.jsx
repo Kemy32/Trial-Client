@@ -34,26 +34,28 @@ export default function FeaturesSection() {
       <div className="">
         <img className="w-full h-full bg-cover" src={HeroAbout} alt="" />
       </div>
-      <div className="py-16 px-4 md:px-12 sm:items-center lg:px-24 flex flex-col lg:flex-row lg:justify-between gap-10">
-        {features.map((feature, index) => (
-          <div key={index} className="w-md flex flex-row gap-7">
-            <div>
-              <img
-                className="max-w-15 "
-                src={feature.icon}
-                alt={feature.iconDescription}
-              />
+      <div className="py-20 px-4 md:px-12 lg:px-24">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
+          {features.map((feature, index) => (
+            <div key={index} className="flex flex-col sm:flex-row gap-6 items-start">
+              <div className="shrink-0 bg-light-coffee p-4 rounded-2xl shadow-sm">
+                <img
+                  className="w-12 h-12 object-contain"
+                  src={feature.icon}
+                  alt={feature.iconDescription}
+                />
+              </div>
+              <div className="flex flex-col gap-3">
+                <h1 className="text-xl text-dark-gray font-bold font-heading">
+                  {feature.title}
+                </h1>
+                <p className="text-sm text-dark-gray leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl text-black font-bold mb-4">
-                {feature.title}
-              </h1>
-              <p className="text-sm text-dark-gray max-w-2xs">
-                {feature.description}
-              </p>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

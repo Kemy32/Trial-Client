@@ -47,16 +47,16 @@ export default function LoginForm() {
   useEffect(() => {
     if (error) {
       toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
       });
       dispatch(clearError());
     }
 
     if (message) {
       toast.success(message, {
-        position: "top-center",
-        autoClose: 3000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE),
       });
       dispatch(clearMessage());
     }
@@ -105,11 +105,10 @@ export default function LoginForm() {
                   name="email"
                   id="email"
                   placeholder="john@example.com"
-                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
-                    errors.email && touched.email
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.email && touched.email
                       ? "outline-1 outline-mid-red border-mid-red"
                       : ""
-                  }`}
+                    }`}
                 />
                 <ErrorMessage
                   name="email"
@@ -132,11 +131,10 @@ export default function LoginForm() {
                     name="password"
                     id="password"
                     placeholder="••••••••"
-                    className={`appearance-none rounded-full relative block w-full px-3 py-3  bg-white border-grayish border-2 placeholder-grayish  text-mid-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm  ${
-                      errors.password && touched.password
+                    className={`appearance-none rounded-full relative block w-full px-3 py-3  bg-white border-grayish border-2 placeholder-grayish  text-mid-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm  ${errors.password && touched.password
                         ? "outline-1 outline-mid-red border-mid-red"
                         : ""
-                    }`}
+                      }`}
                   />
                   <button
                     type="button"

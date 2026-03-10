@@ -46,16 +46,16 @@ export default function RegisterForm() {
   useEffect(() => {
     if (error) {
       toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
       });
       dispatch(clearError());
     }
 
     if (message) {
       toast.success(message, {
-        position: "top-center",
-        autoClose: 3000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE),
       });
       // Clear message after showing
       dispatch(clearMessage());
@@ -75,8 +75,8 @@ export default function RegisterForm() {
       dispatch(register(values));
     } catch (error) {
       toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
       });
     } finally {
       setSubmitting(false);
@@ -113,11 +113,10 @@ export default function RegisterForm() {
                   name="name"
                   id="name"
                   placeholder="John Doe"
-                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
-                    errors.name && touched.name
-                      ? "outline-1 outline-mid-red border-mid-red"
-                      : ""
-                  }`}
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.name && touched.name
+                    ? "outline-1 outline-mid-red border-mid-red"
+                    : ""
+                    }`}
                 />
                 <ErrorMessage
                   name="name"
@@ -139,11 +138,10 @@ export default function RegisterForm() {
                   name="email"
                   id="email"
                   placeholder="john@example.com"
-                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
-                    errors.email && touched.email
-                      ? "outline-1 outline-mid-red border-mid-red"
-                      : ""
-                  }`}
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.email && touched.email
+                    ? "outline-1 outline-mid-red border-mid-red"
+                    : ""
+                    }`}
                 />
                 <ErrorMessage
                   name="email"
@@ -165,11 +163,10 @@ export default function RegisterForm() {
                   name="phone"
                   id="phone"
                   placeholder="123-456-7890"
-                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
-                    errors.phone && touched.phone
-                      ? "outline-1 outline-mid-red border-mid-red"
-                      : ""
-                  }`}
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.phone && touched.phone
+                    ? "outline-1 outline-mid-red border-mid-red"
+                    : ""
+                    }`}
                 />
                 <ErrorMessage
                   name="phone"
@@ -192,11 +189,10 @@ export default function RegisterForm() {
                     name="password"
                     id="password"
                     placeholder="••••••••"
-                    className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
-                      errors.password && touched.password
-                        ? "outline-1 outline-mid-red border-mid-red"
-                        : ""
-                    }`}
+                    className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.password && touched.password
+                      ? "outline-1 outline-mid-red border-mid-red"
+                      : ""
+                      }`}
                   />
                   <button
                     type="button"

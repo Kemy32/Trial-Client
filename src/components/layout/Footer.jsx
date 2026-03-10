@@ -35,9 +35,9 @@ export default function Footer() {
     <>
       <footer className="w-full bg-dark-gray text-white font-sans">
         {/* Main Footer Content */}
-        <div className="max-w-7xl mx-auto px-6 py-14 flex flex-col md:flex-row md:justify-between gap-8 border-b border-b-grayish">
+        <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 border-b border-b-grayish">
           {/* First column (Brand/Social) */}
-          <div className="md:w-1/5 w-full">
+          <div className="flex flex-col gap-6">
             <div className="flex items-center space-x-2 mb-4">
               <img
                 src={BistroBlissLogo}
@@ -66,7 +66,7 @@ export default function Footer() {
           </div>
 
           {/* Second column (Pages) */}
-          <div className="md:w-auto w-1/2">
+          <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-5">Pages</h4>
             <ul className="space-y-2 text-sm">
               {PageLinks.map((link) => (
@@ -83,7 +83,7 @@ export default function Footer() {
           </div>
 
           {/* Third column (Utility Pages) */}
-          <div className="md:w-auto w-1/2">
+          <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-5"> Utility Pages</h4>
             <ul className="space-y-2 text-sm">
               {UtilityLinks.map((link) => (
@@ -100,7 +100,7 @@ export default function Footer() {
           </div>
 
           {/* Fourth column (Recipes)*/}
-          <div className="md:w-1/4 w-full">
+          <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-5">
               Taste Our Latest Recipes
             </h4>

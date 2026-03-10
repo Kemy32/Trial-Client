@@ -25,7 +25,7 @@ export default function UsersSection() {
       toast.error(error, {
         toastId: "users-error",
         position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
-        autoClose: import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
       });
       dispatch(clearError());
     }
@@ -33,7 +33,7 @@ export default function UsersSection() {
       toast.success(message, {
         toastId: "users-success",
         position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
-        autoClose: import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE),
       });
       dispatch(clearMessage());
     }
@@ -46,10 +46,12 @@ export default function UsersSection() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto mb-16 p-8 bg-white rounded-lg shadow-md border border-light-coffee">
+    <div className="max-w-5xl mx-auto mb-16 p-4 md:p-8 bg-white rounded-lg shadow-md border border-light-coffee">
       {/* Header Section */}
-      <div className="flex justify-between items-center  border-b border-light-coffee pb-4 mb-6">
-        <h1 className="text-2xl font-bold text-crimson">Platform Users</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-light-coffee pb-4 mb-6">
+        <h1 className="text-xl md:text-2xl font-bold text-crimson italic font-heading">
+          Platform Users
+        </h1>
         <span className="bg-light-coffee px-4 py-1 rounded-full text-crimson font-semibold text-sm">
           Total: {users?.length || 0}
         </span>
@@ -61,14 +63,8 @@ export default function UsersSection() {
         </div>
       ) : (
         /* Scrollable Container */
-        <div
-          className="overflow-y-auto pr-2 max-h-[480px] custom-scrollbar"
-          style={{
-            scrollbarWidth: "auto",
-            scrollbarColor: `var(--color-crimson) var(--color-light-coffee)`,
-          }}
-        >
-          <table className="w-full border-separate border-spacing-y-3">
+        <div className="overflow-x-auto overflow-y-auto pr-2 max-h-[480px] custom-scrollbar pb-2">
+          <table className="w-full min-w-[700px] border-separate border-spacing-y-3 text-left">
             <thead className="sticky top-0 bg-white z-10">
               <tr className="text-left text-gray-500 uppercase text-xs tracking-wider">
                 <th className="px-4 py-2 bg-white">User name</th>

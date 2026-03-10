@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import EditBlogArticle from "../../components/forms/EditBlogArticleForm.jsx";
@@ -11,10 +11,13 @@ import {
   ChevronUp,
   Save,
   X,
+  Plus,
+  ImagePlus,
 } from "lucide-react";
 import LoadingSpinner from "../../components/ui/LoadingSpinner.jsx";
 import {
   getAllBlogsArticles,
+  createBlogArticle,
   updateBlogArticle,
   deleteBlogArticle,
   clearError,
@@ -56,6 +59,12 @@ const ExpandableContent = ({ text }) => {
   );
 };
 
+const emptyCreateForm = {
+  title: "",
+  content: "",
+  image: null,
+};
+
 export default function BlogsArticlesSection() {
   const dispatch = useDispatch();
   const { blogsArticles, isLoading, error, message } = useSelector(
@@ -67,6 +76,43 @@ export default function BlogsArticlesSection() {
     title: "",
     content: "",
   });
+
+  // Create-article drawer state
+  const [showCreateDrawer, setShowCreateDrawer] = useState(false);
+  const [createFormData, setCreateFormData] = useState(emptyCreateForm);
+  const [imagePreview, setImagePreview] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleCreateChange = (e) => {
+    setCreateFormData({ ...createFormData, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCreateFormData({ ...createFormData, image: file });
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleCreateSubmit = (e) => {
+    e.preventDefault();
+    if (!createFormData.title || !createFormData.content) {
+      toast.error("Please fill in all required fields.", {
+        toastId: "create-blog-validation",
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
+      });
+      return;
+    }
+    dispatch(createBlogArticle(createFormData));
+  };
+
+  const closeCreateDrawer = () => {
+    setShowCreateDrawer(false);
+    setCreateFormData(emptyCreateForm);
+    setImagePreview(null);
+  };
 
   useEffect(() => {
     dispatch(getAllBlogsArticles());
@@ -88,7 +134,8 @@ export default function BlogsArticlesSection() {
         autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE),
       });
       dispatch(clearMessage());
-      setEditingId(null); // Exit edit mode on success
+      setEditingId(null);
+      closeCreateDrawer(); // Close drawer after successful create
     }
   }, [error, message, dispatch]);
 
@@ -124,21 +171,150 @@ export default function BlogsArticlesSection() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto mb-16 p-8 bg-white rounded-lg shadow-md border border-light-coffee">
-      <div className="flex justify-between items-center border-b border-light-coffee pb-4 mb-6">
-        <h1 className="text-2xl font-bold text-crimson">Blogs & Articles</h1>
-        <span className="bg-light-coffee px-4 py-1 rounded-full text-crimson font-semibold text-sm">
-          Total: {blogsArticles?.length || 0}
-        </span>
+    <div className="max-w-5xl mx-auto mb-16 p-4 md:p-8 bg-white rounded-lg shadow-md border border-light-coffee">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-light-coffee pb-4 mb-6">
+        <h1 className="text-xl md:text-2xl font-bold text-crimson italic font-heading">
+          Blogs & Articles
+        </h1>
+        <div className="flex items-center gap-3">
+          <span className="bg-light-coffee px-4 py-1 rounded-full text-crimson font-semibold text-sm">
+            Total: {blogsArticles?.length || 0}
+          </span>
+          <button
+            onClick={() => setShowCreateDrawer(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-crimson text-white rounded-full hover:bg-red-800 transition-all shadow-sm font-bold text-xs uppercase"
+          >
+            <Plus size={14} /> New Article
+          </button>
+        </div>
       </div>
+
+      {/* ── Add New Article Drawer ── */}
+      {showCreateDrawer && (
+        <div className="fixed inset-0 z-50 flex">
+          {/* Backdrop */}
+          <div
+            className="flex-1 bg-black/40 backdrop-blur-sm"
+            onClick={closeCreateDrawer}
+          />
+          {/* Panel */}
+          <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col overflow-y-auto animate-slide-in">
+            {/* Panel Header */}
+            <div className="flex items-center justify-between px-6 py-5 border-b border-light-coffee">
+              <div>
+                <h2 className="text-xl font-bold text-crimson">New Article</h2>
+                <p className="text-xs text-gray-400 mt-0.5">Fill in the details below</p>
+              </div>
+              <button
+                onClick={closeCreateDrawer}
+                className="p-2 rounded-full hover:bg-light-coffee transition-all text-gray-400 hover:text-crimson"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleCreateSubmit} className="flex flex-col gap-5 p-6 flex-1">
+
+              {/* Image Upload */}
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  Cover Photo (optional)
+                </label>
+                <div
+                  className="w-full h-40 rounded-xl border-2 border-dashed border-crimson/20 hover:border-crimson/50 transition-all flex flex-col items-center justify-center cursor-pointer bg-light-coffee/40 overflow-hidden"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {imagePreview ? (
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <>
+                      <ImagePlus size={28} className="text-crimson/40 mb-2" />
+                      <span className="text-xs text-gray-400">Click to upload cover image</span>
+                    </>
+                  )}
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
+              </div>
+
+              {/* Title */}
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
+                  Title *
+                </label>
+                <input
+                  name="title"
+                  value={createFormData.title}
+                  onChange={handleCreateChange}
+                  placeholder="e.g. The Art of Italian Cuisine"
+                  required
+                  maxLength={50}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-dark-gray focus:outline-none focus:border-crimson transition-all"
+                />
+                <p className="text-[10px] text-gray-400 mt-1 text-right">
+                  {createFormData.title.length}/50
+                </p>
+              </div>
+
+              {/* Content */}
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
+                  Content *
+                </label>
+                <textarea
+                  name="content"
+                  value={createFormData.content}
+                  onChange={handleCreateChange}
+                  placeholder="Write your article content here..."
+                  rows={6}
+                  required
+                  maxLength={200}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-dark-gray focus:outline-none focus:border-crimson transition-all resize-none"
+                />
+                <p className="text-[10px] text-gray-400 mt-1 text-right">
+                  {createFormData.content.length}/200
+                </p>
+              </div>
+
+              {/* Submit */}
+              <div className="mt-auto pt-4 border-t border-light-coffee flex gap-3">
+                <button
+                  type="button"
+                  onClick={closeCreateDrawer}
+                  className="flex-1 py-2.5 rounded-full border border-gray-200 text-sm font-bold text-gray-500 hover:bg-gray-50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="flex-1 py-2.5 rounded-full bg-crimson text-white text-sm font-bold hover:bg-red-800 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isLoading ? (
+                    <><span className="spinner" /> Creating...</>
+                  ) : (
+                    <><Plus size={14} /> Publish Article</>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {isLoading && !editingId ? (
         <div className="flex justify-center py-10">
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="overflow-y-auto pr-2 max-h-[700px] custom-scrollbar">
-          <table className="w-full border-separate border-spacing-y-4">
+        <div className="overflow-x-auto overflow-y-auto pr-2 max-h-[700px] custom-scrollbar pb-2">
+          <table className="w-full min-w-[900px] border-separate border-spacing-y-4 text-left">
             <thead className="sticky top-0 bg-white z-10">
               <tr className="text-left text-gray-500 uppercase text-xs tracking-wider">
                 <th className="px-4 py-2 bg-white">Article Details</th>

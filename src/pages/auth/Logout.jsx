@@ -22,8 +22,8 @@ export default function Logout() {
 
         if (loggedOutMessage && isLoggedOut) {
           toast.success(loggedOutMessage, {
-            position: "top-center",
-            autoClose: 5000,
+            position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+            autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE),
           });
         }
         setTimeout(() => navigate("/"), 100);
@@ -31,8 +31,8 @@ export default function Logout() {
         const errorMessage =
           typeof error === "string" ? error : error.message || "Logout failed";
         toast.error(errorMessage, {
-          position: "top-center",
-          autoClose: 3000,
+          position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+          autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
         });
         navigate("/");
       } finally {

@@ -5,39 +5,39 @@ import SeafoodDishImg from "../../../assets/images/seafood-dish.jpg";
 import GrilledMeatImg from "../../../assets/images/grilled-meat.jpg";
 
 export default function DelieverySection() {
-  // Define custom size classes for the images (based on the original pixel sizes)
-  const mainImgClasses = "w-[430px] h-[600px]";
-  const seafoodImgClasses = "w-[290px] h-[330px]";
-  const meatImgClasses = "w-[290px] h-[240px]";
+  // Define custom size classes for the images
+  const mainImgClasses = "w-full max-w-[430px] h-[400px] md:h-[600px]";
+  const seafoodImgClasses = "w-full max-w-[290px] h-[250px] md:h-[330px]";
+  const meatImgClasses = "w-full max-w-[290px] h-[200px] md:h-[240px]";
 
   return (
     <section className="py-20 bg-light-coffee">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
           <div className="shrink-0">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="shrink-0">
+            <div className="flex flex-col sm:flex-row gap-6 items-center lg:items-start">
+              <div className="shrink-0 w-full sm:w-auto flex justify-center">
                 <img
                   src={ChefCookingImg}
                   alt="Chef preparing a dish"
-                  className={`${mainImgClasses} object-cover rounded-lg shadow-lg max-w-full`}
+                  className={`${mainImgClasses} object-cover rounded-lg shadow-lg`}
                 />
               </div>
 
-              <div className="flex flex-col gap-4 justify-between pt-8 sm:pt-0">
-                <div className="shrink-0 mt-8">
+              <div className="flex flex-col gap-6 justify-between pt-0 w-full sm:w-auto">
+                <div className="shrink-0 flex justify-center">
                   <img
                     src={SeafoodDishImg}
                     alt="Seafood dish"
-                    className={`${seafoodImgClasses} object-cover rounded-lg shadow-lg max-w-full`}
+                    className={`${seafoodImgClasses} object-cover rounded-lg shadow-lg`}
                   />
                 </div>
 
-                <div className="shrink-0">
+                <div className="shrink-0 flex justify-center">
                   <img
                     src={GrilledMeatImg}
                     alt="Grilled meat platter"
-                    className={`${meatImgClasses} object-cover rounded-lg shadow-lg max-w-full`}
+                    className={`${meatImgClasses} object-cover rounded-lg shadow-lg`}
                   />
                 </div>
               </div>

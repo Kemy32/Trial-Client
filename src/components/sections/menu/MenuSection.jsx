@@ -25,16 +25,16 @@ export default function MenuSection() {
   useEffect(() => {
     if (error) {
       toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
       });
       dispatch(clearError());
     }
 
     if (message) {
       toast.success(message, {
-        position: "top-center",
-        autoClose: 3000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE),
       });
       dispatch(clearMessage());
     }
@@ -78,11 +78,10 @@ export default function MenuSection() {
             <button
               key={item.category}
               onClick={() => handleFilterClick(item.category)}
-              className={`px-6 py-2 md:px-8 flex items-center gap-2 rounded-full border transition-all font-semibold text-sm md:text-base ${
-                isActive
+              className={`px-6 py-2 md:px-8 flex items-center gap-2 rounded-full border transition-all font-semibold text-sm md:text-base ${isActive
                   ? "bg-crimson border-crimson text-white shadow-md"
                   : "bg-white border-gray-200 text-dark-gray hover:bg-light-coffee"
-              }`}
+                }`}
             >
               <item.icon size={18} />
               {item.title}
