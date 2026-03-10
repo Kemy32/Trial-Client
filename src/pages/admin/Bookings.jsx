@@ -26,7 +26,7 @@ export default function BookingsSection() {
       toast.error(error, {
         toastId: "booking-error",
         position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
-        autoClose: import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
       });
       dispatch(clearError());
     }
@@ -34,7 +34,7 @@ export default function BookingsSection() {
       toast.success(message, {
         toastId: "booking-success",
         position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
-        autoClose: import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE),
       });
       dispatch(clearMessage());
     }

@@ -37,8 +37,8 @@ export default function BookingForm() {
   useEffect(() => {
     if (error) {
       toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_ERROR),
       });
       // Clear error after showing
       dispatch(clearError());
@@ -46,8 +46,8 @@ export default function BookingForm() {
 
     if (message) {
       toast.success(message, {
-        position: "top-center",
-        autoClose: 3000,
+        position: import.meta.env.VITE_TOAST_AUTO_CLOSE_POSITION,
+        autoClose: Number(import.meta.env.VITE_TOAST_AUTO_CLOSE_MESSAGE),
       });
       // Clear message after showing
       dispatch(clearMessage());
