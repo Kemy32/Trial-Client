@@ -49,8 +49,7 @@ export default function BlogsArticlesSection() {
 
   return (
     <section className="py-20 bg-[#F9F9F7]">
-      {" "}
-      {/* light-coffee color */}
+
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row justify-between items-center sm:items-end mb-12 gap-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading text-dark-gray text-center sm:text-left">
@@ -67,7 +66,7 @@ export default function BlogsArticlesSection() {
           <div className="text-center py-20">Loading articles...</div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-            {/* Left side: Big Featured Card */}
+
             <div className="h-full">
               {displayedBlogsArticles[0] && (
                 <BlogArticleCard
@@ -80,7 +79,7 @@ export default function BlogsArticlesSection() {
               )}
             </div>
 
-            {/* Right side: 2x2 Grid of Small Cards */}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {displayedBlogsArticles.slice(1, 5).map((blog) => (
                 <BlogArticleCard

@@ -79,13 +79,12 @@ function App() {
         <Route path="/blogs-articles" element={<BlogArticle />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        {/* Will be under protected routes */}
-        {/* Used here just for testing */}
-        <Route path="/logout" element={<Logout />}></Route>
+
 
         {/* Protected Routes for Admin and User */}
         <Route element={<ProtectedRoute allowedRoles={["admin", "user"]} />}>
           <Route path="/booking" element={<Booking />} />
+          <Route path="/logout" element={<Logout />}></Route>
         </Route>
 
         {/* Protected Routes for Admin */}

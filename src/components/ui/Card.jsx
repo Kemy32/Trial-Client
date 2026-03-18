@@ -112,11 +112,11 @@ export function BlogArticleCard(props) {
     <div
       className={`bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col h-full w-full`}
     >
-      {/* Aspect Ratio Container for Image */}
+
       <div
         className={`relative w-full overflow-hidden ${props.size === "big"
-            ? "aspect-[4/3] md:aspect-auto md:h-full"
-            : "aspect-[16/10]"
+          ? "aspect-[4/3] md:aspect-auto md:h-full"
+          : "aspect-[16/10]"
           }`}
       >
         <img
@@ -126,7 +126,7 @@ export function BlogArticleCard(props) {
         />
       </div>
 
-      {/* Content Section */}
+
       <div className="p-5 flex flex-col flex-grow text-left gap-3">
         <span className="text-gray-400 font-medium text-xs">
           {formatDate(props.date)}

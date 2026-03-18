@@ -34,9 +34,9 @@ export default function Footer() {
   return (
     <>
       <footer className="w-full bg-dark-gray text-white font-sans">
-        {/* Main Footer Content */}
+
         <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 border-b border-b-grayish">
-          {/* First column (Brand/Social) */}
+
           <div className="flex flex-col gap-6">
             <div className="flex items-center space-x-2 mb-4">
               <img
@@ -65,7 +65,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Second column (Pages) */}
+
           <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-5">Pages</h4>
             <ul className="space-y-2 text-sm">
@@ -82,7 +82,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Third column (Utility Pages) */}
+
           <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-5"> Utility Pages</h4>
             <ul className="space-y-2 text-sm">
@@ -99,7 +99,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Fourth column (Recipes)*/}
+
           <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-5">
               Taste Our Latest Recipes
@@ -114,7 +114,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom section (Copyright) */}
+
         <div className="max-w-7xl mx-auto px-6 py-4 text-center text-sm text-coffee border-t border-t-coffee">
           <p>copyright @ 2025 Bistro Bliss. All rights reserved</p>
         </div>

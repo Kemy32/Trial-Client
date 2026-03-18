@@ -42,9 +42,9 @@ export default function ContactForm() {
       >
         {({ isSubmitting, errors, touched }) => (
           <Form className="space-y-6">
-            {/* Name and Email Fields */}
+
             <div className="flex flex-col sm:flex-row gap-6">
-              {/* Name Field */}
+
               <div className="w-full sm:w-1/2 flex flex-col gap-0.5">
                 <label
                   htmlFor="name"
@@ -57,11 +57,10 @@ export default function ContactForm() {
                   name="name"
                   id="name"
                   placeholder="Enter your name"
-                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
-                    errors.name && touched.name
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.name && touched.name
                       ? "outline-1 outline-mid-red border-mid-red"
                       : ""
-                  }`}
+                    }`}
                 />
                 <ErrorMessage
                   name="name"
@@ -70,7 +69,7 @@ export default function ContactForm() {
                 />
               </div>
 
-              {/* Email Field */}
+
               <div className="w-full sm:w-1/2 flex flex-col gap-0.5">
                 <label
                   htmlFor="email"
@@ -83,11 +82,10 @@ export default function ContactForm() {
                   name="email"
                   id="email"
                   placeholder="Enter email address"
-                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
-                    errors.email && touched.email
+                  className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.email && touched.email
                       ? "outline-1 outline-mid-red border-mid-red"
                       : ""
-                  }`}
+                    }`}
                 />
                 <ErrorMessage
                   name="email"
@@ -97,7 +95,7 @@ export default function ContactForm() {
               </div>
             </div>
 
-            {/* Subject Field - Full Width */}
+
             <div className="flex flex-col gap-0.5">
               <label
                 htmlFor="subject"
@@ -110,11 +108,10 @@ export default function ContactForm() {
                 name="subject"
                 id="subject"
                 placeholder="Write a subject"
-                className={`appearance-none rounded-2xl relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
-                  errors.subject && touched.subject
+                className={`appearance-none rounded-2xl relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.subject && touched.subject
                     ? "outline-1 outline-mid-red border-mid-red"
                     : ""
-                }`}
+                  }`}
               />
               <ErrorMessage
                 name="subject"
@@ -123,7 +120,6 @@ export default function ContactForm() {
               />
             </div>
 
-            {/* Message Field - Full Width */}
             <div className="flex flex-col gap-0.5">
               <label
                 htmlFor="body"
@@ -137,11 +133,10 @@ export default function ContactForm() {
                 id="body"
                 rows="5"
                 placeholder="Write your message"
-                className={`appearance-none resize-y rounded-xl relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${
-                  errors.body && touched.body
+                className={`appearance-none resize-y rounded-xl relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.body && touched.body
                     ? "outline-1 outline-mid-red border-mid-red"
                     : ""
-                }`}
+                  }`}
               />
               <ErrorMessage
                 name="body"
@@ -150,7 +145,7 @@ export default function ContactForm() {
               />
             </div>
 
-            {/* Submit Button */}
+
             <button
               type="submit"
               disabled={isSubmitting}

@@ -92,7 +92,7 @@ export default function LoginForm() {
         >
           {({ isSubmitting, errors, touched }) => (
             <Form className="mt-8 space-y-6">
-              {/* Email Field */}
+
               <div className="flex flex-col gap-0.5 -space-y-px">
                 <label
                   className="font-semibold text-sm text-dark-gray mb-1.5"
@@ -106,8 +106,8 @@ export default function LoginForm() {
                   id="email"
                   placeholder="john@example.com"
                   className={`appearance-none rounded-full relative block w-full px-3 py-3 bg-white border-grayish border-2 placeholder-grayish  text-dark-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm ${errors.email && touched.email
-                      ? "outline-1 outline-mid-red border-mid-red"
-                      : ""
+                    ? "outline-1 outline-mid-red border-mid-red"
+                    : ""
                     }`}
                 />
                 <ErrorMessage
@@ -117,7 +117,7 @@ export default function LoginForm() {
                 />
               </div>
 
-              {/* Password Field */}
+
               <div className="flex flex-col gap-0.5 -space-y-px">
                 <label
                   className="font-semibold text-sm text-dark-gray mb-1.5"
@@ -132,8 +132,8 @@ export default function LoginForm() {
                     id="password"
                     placeholder="••••••••"
                     className={`appearance-none rounded-full relative block w-full px-3 py-3  bg-white border-grayish border-2 placeholder-grayish  text-mid-gray  focus:outline-none focus:ring-mid-gray focus:border-mid-gray focus:z-10 sm:text-sm  ${errors.password && touched.password
-                        ? "outline-1 outline-mid-red border-mid-red"
-                        : ""
+                      ? "outline-1 outline-mid-red border-mid-red"
+                      : ""
                       }`}
                   />
                   <button

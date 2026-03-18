@@ -100,7 +100,7 @@ export default function RegisterForm() {
         >
           {({ isSubmitting, setFieldValue, errors, touched }) => (
             <Form className="mt-8 space-y-6">
-              {/* Name Field */}
+
               <div className="flex flex-col gap-0.5 -space-y-px">
                 <label
                   className="font-semibold text-sm text-dark-gray mb-1.5"
@@ -125,7 +125,7 @@ export default function RegisterForm() {
                 />
               </div>
 
-              {/* Email Field */}
+
               <div className="flex flex-col gap-0.5 -space-y-px">
                 <label
                   className="font-semibold text-sm text-dark-gray mb-1.5"
@@ -150,7 +150,7 @@ export default function RegisterForm() {
                 />
               </div>
 
-              {/* Phone Field */}
+
               <div className="flex flex-col gap-0.5 -space-y-px">
                 <label
                   className="font-semibold text-sm text-dark-gray mb-1.5"
@@ -175,7 +175,7 @@ export default function RegisterForm() {
                 />
               </div>
 
-              {/* Password Field */}
+
               <div className="flex flex-col gap-0.5 -space-y-px">
                 <label
                   className="font-semibold text-sm text-dark-gray mb-1.5"
@@ -253,7 +253,7 @@ export default function RegisterForm() {
                 )}
               </div> */}
 
-              {/* Submit Button */}
+
               <button
                 type="submit"
                 disabled={isSubmitting || isLoading}
@@ -269,7 +269,7 @@ export default function RegisterForm() {
                 )}
               </button>
 
-              {/* Login Link */}
+
               <p className="text-center text-sm text-mid-gray">
                 Already have an account?
                 <Link
